@@ -1,0 +1,37 @@
+<div class="card shadow-sm">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Categorías</h5>
+        <a href="{{-- {{ route('categories.create', ['client_id' => $client->id]) }} --}}" class="btn btn-sm btn-primary">
+            <i class="bi bi-plus"></i> Nueva Categoría
+        </a>
+    </div>
+    <div class="card-body">
+        @if($client->categories->count() > 0)
+        <div class="row">
+            @foreach($client->categories as $category)
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ $category->name }}</h5>
+                        <p class="card-text">{{ $category->slug }}</p>
+                        <p class="card-text">{{ $category->description }}</p>
+                        <p class="text-muted">Orden:{{ $category->order }}</p>
+                        <p class="badge bg-{{ $category->featured ? 'success' : 'secondary' }} ms-auto">{{ $category->featured ? "Destacado" : "Normal" }}</p>
+                        <p class="text-muted">
+                            Productos: {{ $category->products->count() }}
+                        </p>
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <a href="{{-- {{ route('categories.edit', $category) }} --}}" class="btn btn-sm btn-outline-primary">
+                            <i class="bi bi-pencil"></i> Editar
+                        </a>
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
+        @else
+        <div class="alert alert-info">No hay categorías registradas</div>
+        @endif
+    </div>
+</div>

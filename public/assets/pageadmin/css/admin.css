@@ -1,0 +1,104 @@
+/* Variables de color */
+:root {
+    --admin-primary: #4e73df;
+    --admin-secondary: #1cc88a;
+    --admin-dark: #212529;
+    --admin-light: #f8f9fa;
+}
+
+/* Estructura principal */
+.admin-body {
+    background-color: #f5f7ff;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+.admin-sidebar {
+    width: 250px;
+    min-height: 100vh;
+    transition: all 0.3s;
+}
+
+.admin-main {
+    min-height: 100vh;
+}
+
+.admin-content {
+    padding-top: 20px;
+}
+
+/* Componentes personalizados */
+.card-dashboard {
+    border: none;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
+}
+
+.btn-admin-primary {
+    background-color: var(--admin-primary);
+    color: white;
+    border: none;
+}
+
+.btn-admin-primary:hover {
+    background-color: #3a5bc7;
+    color: white;
+}
+
+/* Paginación personalizada */
+.pagination .bi {
+    font-size: 0.75rem; /* Tamaño proporcional al texto */
+    vertical-align: middle;
+}
+
+/* Íconos en botones de paginación */
+.page-item .bi {
+    font-size: inherit; /* Hereda el tamaño del texto */
+    line-height: 10;
+}
+
+/* Efecto hover */
+.page-item:not(.active):not(.disabled) .page-link:hover {
+    background-color: #f0f0f0;
+}
+
+.color-badge {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1px solid #dee2e6;
+}
+
+.table-borderless td, .table-borderless th {
+    padding: 0.3rem 0;
+}
+
+.nav-tabs .nav-link.active {
+    font-weight: 600;
+    border-bottom: 3px solid #4e73df;
+}
+.card-img-overlay {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+
+
+.card {
+    border-radius: 0.5rem;
+}
+.card-header {
+    border-radius: 0.5rem 0.5rem 0 0 !important;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+    .admin-sidebar {
+        position: fixed;
+        z-index: 1000;
+        left: -250px;
+    }
+    
+    .admin-sidebar.active {
+        left: 0;
+    }
+}

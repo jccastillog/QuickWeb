@@ -419,6 +419,7 @@
                         <li><a href="javascript:void(0);" data-target="section2">Deployment Guides</a></li>
                         <li><a href="javascript:void(0);" data-target="section3">Using Cloudways Features</a></li>
                         <li><a href="javascript:void(0);" data-target="section4">Optimization Guides</a></li>
+                        <li><a href="{{ route('clients.index') }}">Clientes </a></li>
                     </ul>
                 </div>
 

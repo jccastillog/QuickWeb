@@ -21,7 +21,7 @@ class StoreTestimonialRequest extends FormRequest
             'content' => 'required|string',
             'rating' => 'required|integer|min:1|max:5',
             'order' => 'nullable|integer|min:0',
-            'active' => 'nullable|boolean'
+            'active' => 'nullable|boolean',
         ];
     }
 }

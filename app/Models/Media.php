@@ -13,6 +13,10 @@ class Media extends Model
     protected $fillable = [
         'client_id',
         'filename',
+        'uuid',
+        'type',
+        'name',
+        'is_approved',
         'path',
         'full_url',
         'mime_type',

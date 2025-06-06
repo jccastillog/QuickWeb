@@ -22,9 +22,12 @@ class StoreClientRequest extends FormRequest
             'primary_color' => 'nullable|string|max:7|starts_with:#',
             'secondary_color' => 'nullable|string|max:7|starts_with:#',
             'theme' => 'nullable|in:light,dark',
+            'timezone' => 'nullable|string|max:255',
             'font' => 'nullable|string|max:255',
             'active' => 'nullable|boolean',
-            'expires_at' => 'nullable|date'
+            'expires_at' => 'nullable|date',
+            'logo' => 'nullable|image|max:2048',
+            'favicon' => 'nullable|image|max:2048',
         ];
     }
 
