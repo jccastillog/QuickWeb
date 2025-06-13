@@ -27,7 +27,7 @@ Route::get('test', function() {
                 'first_client' => App\Models\Client::with('siteSettings')->first(),
                 'categories_count' => App\Models\Category::count(),
                 'products_count' => App\Models\Product::count(),
-                'first_product' => App\Models\Product::with(['category', 'images'])->first()
+                'first_product' => App\Models\Product::with(['category', 'image'])->first()
             ]
         ]);
     } catch (\Exception $e) {

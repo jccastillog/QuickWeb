@@ -27,12 +27,12 @@
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label for="order" class="form-label">Orden</label>
-                                    <input type="number" class="form-control" id="order" name="order" 
+                                    <input type="number" class="form-control" id="order" name="order"
                                         min="0" value="{{ old('order', $page->order) }}">
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <div class="form-group">
-                                        <label for="active">Estado</label>
+                                        <label for="active" class="form-label">Estado</label>
                                         <select class="form-control @error('active') is-invalid @enderror" id="active" name="active">
                                             <option value="1" {{ old('active', $page->active) ? 'selected' : '' }}>Activo</option>
                                             <option value="0" {{ !old('active', $page->active) ? 'selected' : '' }}>Inactivo</option>

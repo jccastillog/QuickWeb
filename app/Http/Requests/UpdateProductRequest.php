@@ -17,7 +17,7 @@ class UpdateProductRequest extends FormRequest
     public function rules()
     {
         $product = $this->route('product');
-        
+
         return [
             'category_id' => 'required|exists:categories,id',
             'name' => [
@@ -42,9 +42,9 @@ class UpdateProductRequest extends FormRequest
                 'max:100',
                 Rule::unique('products')->ignore($product->id)
             ],
-            'featured' => 'nullable|boolean',
-            'active' => 'nullable|boolean',
-            'images.*' => 'nullable|image|max:2048' // Para múltiples imágenes
+            'featured' => 'required|boolean',
+            'active' => 'required|boolean',
+            'image' => 'nullable|image|max:2048' // Para múltiples imágenes
         ];
     }
 
@@ -58,15 +58,15 @@ class UpdateProductRequest extends FormRequest
             'price.min' => 'El precio no puede ser negativo',
             'compare_price.min' => 'El precio de comparación no puede ser negativo',
             'stock.min' => 'El stock no puede ser negativo',
-            'images.*.max' => 'Cada imagen no debe pesar más de 2MB',
-            'images.*.image' => 'Todos los archivos deben ser imágenes válidas'
+            'image.*.max' => 'Cada imagen no debe pesar más de 2MB',
+            'image.*.image' => 'Todos los archivos deben ser imágenes válidas'
         ];
     }
 
     public function attributes()
     {
         return [
-            'images.*' => 'imagen'
+            'image.*' => 'imagen'
         ];
     }
 }

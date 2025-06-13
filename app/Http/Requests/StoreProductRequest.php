@@ -24,8 +24,8 @@ class StoreProductRequest extends FormRequest
             'stock' => 'required|integer|min:0',
             'sku' => 'nullable|string|max:100',
             'barcode' => 'nullable|string|max:100',
-            'featured' => 'nullable|boolean',
-            'active' => 'nullable|boolean'
+            'featured' => 'required|boolean',
+            'active' => 'required|boolean'
         ];
     }
 

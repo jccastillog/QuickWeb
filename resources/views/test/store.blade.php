@@ -14,7 +14,7 @@
 </head>
 <body>
     <h1>Prueba de Datos de Tienda</h1>
-    
+
     <div id="store-data">
         <p>Cargando datos...</p>
     </div>
@@ -23,7 +23,7 @@
         // Obtener el dominio de la URL
         const domain = window.location.pathname.split('/')[3] || 'tienda1.test';
         console.log('Dominio de la tienda:', domain);
-        
+
         // Fetch a la API
         fetch(`/api/store/${domain}`)
             .then(response => {
@@ -62,10 +62,10 @@
                     <p>${data.client.font}</p>
                     <p>${data.client.timezone}</p>
                     <p>${data.client.site_settings.about_text}</p>
-                    
+
                     <hr>
             `;
-            
+
             // Mostrar categorías y productos
             data.categories.forEach(category => {
                 html += `
@@ -73,7 +73,7 @@
                         <h3>${category.name}</h3>
                         ${category.description ? `<p>${category.description}</p>` : ''}
                 `;
-                
+
                 if(category.products && category.products.length > 0) {
                     category.products.forEach(product => {
                         html += `
@@ -81,20 +81,20 @@
                                 <h4>${product.name} - $${product.price}</h4>
                                 <p>${product.description.substring(0, 100)}...</p>
                         `;
-                        
-                        if(product.images && product.images.length > 0) {
-                            html += `<img src="${product.images[0].alt_text}" class="product-image">`;
+
+                        if(product.image && product.image.length > 0) {
+                            html += `<img src="${product.image[0].alt_text}" class="product-image">`;
                         }
-                        
+
                         html += `</div>`;
                     });
                 } else {
                     html += `<p>No hay productos en esta categoría</p>`;
                 }
-                
+
                 html += `</div>`;
             });
-            
+
             html += `</div>`;
             document.getElementById('store-data').innerHTML = html;
         }

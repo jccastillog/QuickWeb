@@ -13,7 +13,7 @@
                     <div class="col-md-6">
                         <h4>{{ $category->name }}</h4>
                         <p>{{ $category->description }}</p>
-                        <a href="{{ route('category.show', ['domain' => $client->domain, 'category' => $category->slug]) }}"
+                        <a href="{{ route('storefront.category', ['domain' => $client->domain, 'categorySlug' => $category->slug]) }}"
                             class="btn btn-primary">
                             {{ __('Ver más') }}
                         </a>
@@ -36,15 +36,15 @@
                 @foreach ($featuredProducts as $product)
                     <div class="col-md-4 mb-4">
                         <div class="card product-card p-3 h-100">
-                            @if ($product->images->count() > 0)
-                                <img src="{{ asset($product->images->first()->path) }}" class="img-fluid"
+                            @if ($product->image->count() > 0)
+                                <img src="{{ asset($product->image->first()->path) }}" class="img-fluid"
                                     alt="{{ $product->name }}">
                             @endif
                             <h4 class="mt-3">{{ $product->name }}</h4>
                             <p>{{ Str::limit($product->description, 100) }}</p>
                             <div class="mt-auto">
                                 <span class="text-primary fw-bold">${{ number_format($product->price, 2) }}</span>
-                                <a href="{{ route('product.show', ['domain' => $client->domain, 'product' => $product->slug]) }}"
+                                <a href="{{ route('storefront.product', ['domain' => $client->domain, 'productSlug' => $product->slug]) }}"
                                     class="btn btn-outline-primary rounded-pill px-4 py-2 mt-2">
                                     {{ __('Comprar') }}
                                 </a>

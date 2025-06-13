@@ -1,7 +1,5 @@
 <?php
 
-// app/Http/Controllers/CategoryController.php
-
 namespace App\Http\Controllers;
 
 use App\Models\Category;
@@ -9,68 +7,94 @@ use App\Models\Client;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Http\Traits\HandlesMediaUploads;
+use Exception;
 
 class CategoryController extends Controller
 {
     use HandlesMediaUploads;
-    public function index(Client $client)
-    {
-        $categories = $client->categories()->paginate(10);
-        return view('categories.index', compact('categories', 'client'));
-    }
 
     public function create(Client $client)
     {
-        return view('categories.create', compact('client'));
+        return view('pageadmin.categories.create', compact('client'));
     }
 
     public function store(StoreCategoryRequest $request, Client $client)
     {
-        $category = $client->categories()->create($request->validated());
-        
-        // Manejar imagen si existe
-        if ($request->hasFile('image')) {
-            $this->uploadImage($category, $request->file('image'));
-        }
-        
-        return redirect()->route('clients.categories.show', [$client, $category])
-            ->with('success', 'Categoría creada');
-    }
+        try {
+            $validated = $request->validated();
+            $validated['client_id'] = $client->id;
 
-    public function show(Client $client, Category $category)
-    {
-        $category->load('products');
-        return view('categories.show', compact('client', 'category'));
+            $category = Category::create($validated);
+
+            if ($request->hasFile('image')) {
+                $this->uploadMedia(
+                    $category,
+                    $request->file('image'),
+                    'category_image'
+                );
+            }
+
+            return redirect()
+                ->route('clients.show', $client)
+                ->with('success', 'Categoría creada exitosamente');
+
+        } catch (Exception $e) {
+            return back()
+                ->withInput()
+                ->with('error', 'Error al crear la categoría: '.$e->getMessage());
+        }
     }
 
     public function edit(Client $client, Category $category)
     {
-        return view('categories.edit', compact('client', 'category'));
+        return view('pageadmin.categories.edit', compact('client', 'category'));
     }
 
     public function update(UpdateCategoryRequest $request, Client $client, Category $category)
     {
-        $category->update($request->validated());
-        
-        // Actualizar imagen si se proporciona
-        if ($request->hasFile('image')) {
-            $this->uploadImage($category, $request->file('image'), true);
+        try {
+            $category->update($request->validated());
+
+            if ($request->hasFile('image')) {
+                $this->uploadMedia(
+                    $category,
+                    $request->file('image'),
+                    'category_image',
+                    true
+                );
+            } elseif ($request->has('remove_image') && $category->image) {
+                $this->deleteMedia($category->image->media);
+                $category->image()->delete();
+            }
+
+            return redirect()
+                ->route('clients.show', $client)
+                ->with('success', 'Categoría actualizada exitosamente');
+
+        } catch (Exception $e) {
+            return back()
+                ->withInput()
+                ->with('error', 'Error al actualizar la categoría: '.$e->getMessage());
         }
-        
-        return redirect()->route('clients.categories.show', [$client, $category])
-            ->with('success', 'Categoría actualizada');
     }
 
     public function destroy(Client $client, Category $category)
     {
-        $category->delete();
-        return redirect()->route('clients.categories.index', $client)
-            ->with('success', 'Categoría eliminada');
-    }
-    
-    protected function uploadImage($model, $file, $replace = false)
-    {
-        // Implementación de subida de imagen
-        // (Ver sección de MediaController para implementación completa)
+        try {
+            if ($category->image) {
+                $this->deleteMedia($category->image->media);
+                $category->image()->delete();
+            }
+
+            $category->delete();
+
+            return redirect()
+                ->route('clients.show', $client)
+                ->with('success', 'Categoría eliminada exitosamente');
+
+        } catch (Exception $e) {
+            return back()
+                ->with('error', 'Error al eliminar la categoría: '.$e->getMessage());
+        }
     }
 }

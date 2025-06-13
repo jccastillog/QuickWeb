@@ -1,536 +1,458 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
+<html lang="es">
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="robots" content="noindex, nofollow">
-   
- <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Cloudways Laravel</title>
+    <title>QuickWeb - Soluciones Digitales para Emprendedores</title>
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <style type="text/css">
-        @font-face {
-            font-family: 'proxima_nova';
-            src: url('https://litmus.com/fonts/Emails/proximanova-regular-webfont.eot');
-            src: url('https://litmus.com/fonts/Emails/proximanova-regular-webfont.eot?#iefix') format('embedded-opentype'),
-                url('https://litmus.com/fonts/Emails/proximanova-regular-webfont.woff') format('woff'),
-                url('https://litmus.com/fonts/Emails/proximanova-regular-webfont.ttf') format('truetype'),
-                url('https://litmus.com/fonts/Emails/proximanova-regular-webfont.svg#proxima_nova_rgregular') format('svg');
-            font-weight: 400;
-            font-style: normal;
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --qw-primary: #2F39BF;
+            --qw-secondary: #39DCB1;
+            --qw-dark: #0A1E43;
+            --qw-light: #F8F9FB;
         }
         
-        @font-face {
-            font-family: 'proxima_nova';
-            src: url('https://litmus.com/fonts/Emails/proximanova-bold-webfont.eot');
-            src: url('https://litmus.com/fonts/Emails/proximanova-bold-webfont.eot?#iefix') format('embedded-opentype'),
-                url('https://litmus.com/fonts/Emails/proximanova-bold-webfont.woff') format('woff'),
-                url('https://litmus.com/fonts/Emails/proximanova-bold-webfont.ttf') format('truetype'),
-                url('https://litmus.com/fonts/Emails/proximanova-bold-webfont.svg#proxima_nova_rgbold') format('svg');
-            font-weight: 600;
-            font-style: normal;
-        }
-
-        * {
-            -webkit-box-sizing: border-box;
-            -moz-box-sizing: border-box;
-            box-sizing: border-box;
-            overflow-x: hidden;
-        }
-
         body {
-            padding: 0;
-            margin: 0;
-            color: #1a1a1a;
-            font-size: 15px;
-            font-family: 'proxima_nova';
-            font-weight: 400;
-        }
-
-        a {
-            display: inline-block;
-            text-decoration: none !important;
-            transition: all 0.3s ease-in-out;
-        }
-
-        .container {
-            max-width: 1120px;
-            margin: 0 auto;
-            padding-left: 15px;
-            padding-right: 15px;
-        }
-
-        .img-responsive
-        {
-            display: inline-block;
-            max-width: 100%;
-            height: auto;
-        }
-
-        .cw_glb_btn {
-            color: #0E134F;
-            font-size: 16px;
-            font-weight: 600;
-            display: inline-block;
-            background-color: #39DCB1;
-            border-radius: 6px !important;
-            padding: 15px 20px;
-            min-width: 220px;
-            text-align: center;
-            text-transform: uppercase;
-        }
-
-        .cw_glb_btn:hover, .cw_glb_btn:focus, .cw_glb_btn:active {
-            background-color: #74ffda !important;
-        }
-
-        .lrvl_wlcm_bnr_sec
-        {
-            background: #1c2bf7;
-            background: -moz-linear-gradient(45deg, #1c2bf7 0, #061c59 100%);
-            background: -webkit-gradient(left bottom, right top, color-stop(0%, #1c2bf7), color-stop(100%, #061c59));
-            background: -webkit-linear-gradient(45deg, #1c2bf7 0, #061c59 100%);
-            background: -o-linear-gradient(45deg, #1c2bf7 0, #061c59 100%);
-            background: -ms-linear-gradient(45deg, #1c2bf7 0, #061c59 100%);
-            background: linear-gradient(45deg, #1c2bf7 0, #061c59 100%);
-            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#1c2bf7', endColorstr='#061c59', GradientType=1);
-            padding: 60px 0 80px;
-        }
-
-        .lrvl_wlcm_bnr_mainBox h1
-        {
-            color: #fff;
-            font-size: 48px;
-            font-weight: 600;
-            margin: 30px 0;
-        }
-
-        .lrvl_wlcm_mid_sec
-        {
-            background: #fff;
-            padding-bottom: 80px;
-        }
-
-        .lrvl_wlcm_mid_mainBox
-        {
-            display: flex;
-        }
-
-        .lrvl_wlcm_mid_lftBox
-        {
-            flex: 1;
-        }
-
-        .lrvl_wlcm_version
-        {
-            color: #0A1E43;
-            opacity: 0.7;
-            font-size: 14px;
-            padding: 20px 0 30px;
-        }
-
-        .lrvl_wlcm_mid_lftBox
-        {
-            position: relative;
-        }
-
-        .lrvl_wlcm_mid_lftBox ul
-        {
-            margin: 0;
-            padding: 0;
-        }
-
-        .lrvl_wlcm_mid_lftBox ul li
-        {
-            margin: 0;
-            padding: 0;
-            list-style: none;
-        }
-
-        .lrvl_wlcm_mid_lftBox ul li a
-        {
-            color: #0A1E43;
-            font-size: 18px;
-            padding: 15px;
-            display: block;
-            border-left: 2px solid rgba(196, 196, 196, 0.5);
-        }
-
-        .lrvl_wlcm_mid_lftBox ul li a.active
-        {
-            color: #2F39BF;
-            font-weight: 600;
-            border-color: #2F39BF;
-        }
-
-        .lrvl_wlcm_mid_lftBox_fxd
-        {
-            position: fixed;
-            top: 100px;
-            z-index: 999;
-        }
-
-        .lrvl_wlcm_mid_rhtBox
-        {
-            flex: 2;
-        }
-
-        .lrvl_wlcm_mid_rht_txtBox
-        {
-            margin-bottom: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            line-height: 1.6;
         }
         
-        .lrvl_wlcm_mid_rht_txtBox h2
-        {
-            color: #0E134F;
-            font-size: 36px;
+        .qw-bg-gradient {
+            background: linear-gradient(135deg, var(--qw-primary) 0%, #061c59 100%);
+            color: white;
+        }
+        
+        .qw-btn-primary {
+            background-color: var(--qw-secondary);
+            color: var(--qw-dark);
             font-weight: 600;
-            margin: 0 0 30px;
+            padding: 12px 25px;
+            border-radius: 6px;
+            border: none;
+            transition: all 0.3s ease;
         }
-
-        .lrvl_wlcm_mid_rht_txtBox ul
-        {
-            margin: 0;
-            padding: 0;
+        
+        .qw-btn-primary:hover {
+            background-color: #74ffda;
+            transform: translateY(-2px);
         }
-
-        .lrvl_wlcm_mid_rht_txtBox ul li
-        {
-            margin: 0;
-            padding: 0;
-            list-style: none;
-        }
-
-        .lrvl_wlcm_mid_rht_txtBox ul li a
-        {
-            color: #0A1E43;
-            font-size: 18px;
-            font-weight: 600;
-            padding: 20px;
-            margin-bottom: 20px;
-            background: rgba(248, 249, 251, 0.5);
-            display: block;
-        }
-
-        .lrvl_wlcm_mid_rht_txtBox ul li a:hover,
-        .lrvl_wlcm_mid_rht_txtBox ul li a:focus,
-        .lrvl_wlcm_mid_rht_txtBox ul li a:active
-        {
-            color: #2F39BF;
-        }
-
-        .lrvl_wlcm_signUp_sec
-        {
-            background: #1c2bf7;
-            background: -moz-linear-gradient(45deg, #1c2bf7 0, #061c59 100%);
-            background: -webkit-gradient(left bottom, right top, color-stop(0%, #1c2bf7), color-stop(100%, #061c59));
-            background: -webkit-linear-gradient(45deg, #1c2bf7 0, #061c59 100%);
-            background: -o-linear-gradient(45deg, #1c2bf7 0, #061c59 100%);
-            background: -ms-linear-gradient(45deg, #1c2bf7 0, #061c59 100%);
-            background: linear-gradient(45deg, #1c2bf7 0, #061c59 100%);
-            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#1c2bf7', endColorstr='#061c59', GradientType=1);
+        
+        .qw-section {
             padding: 80px 0;
-            text-align: center;
         }
-
-        .lrvl_wlcm_signUp_mainBox h3
-        {
-            color: #fff;
-            font-size: 36px;
+        
+        .qw-card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+            height: 100%;
+        }
+        
+        .qw-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .qw-card-icon {
+            font-size: 2.5rem;
+            color: var(--qw-primary);
+            margin-bottom: 1rem;
+        }
+        
+        .qw-feature-list li {
+            margin-bottom: 10px;
+            position: relative;
+            padding-left: 25px;
+        }
+        
+        .qw-feature-list li:before {
+            content: "✓";
+            color: var(--qw-secondary);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+        
+        .qw-nav-pills .nav-link {
+            color: var(--qw-dark);
+            border-radius: 6px;
+            margin-bottom: 10px;
+            padding: 12px 20px;
+            font-weight: 500;
+        }
+        
+        .qw-nav-pills .nav-link.active {
+            background-color: var(--qw-primary);
+            color: white;
+        }
+        
+        .qw-faq-item {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+        }
+        
+        .qw-faq-question {
             font-weight: 600;
-            margin: 0 0 30px;
+            color: var(--qw-primary);
         }
-
-        .lrvl_wlcm_ftr_sec
-        {
-            background: #050826;
-            padding: 20px 0;
-        }
-
-        .lrvl_wlcm_ftr_sec p
-        {
-            color: #fff;
-            font-size: 15px;
-            margin: 0;
-            text-align: center;
-        }
-
-        @media (max-width: 1200px)
-        {
-            .container {
-                width: 970px;
-            }
-        }
-
-        @media (max-width: 992px)
-        {
-            .container {
-                width: 750px;
-            }
-
-            .lrvl_wlcm_bnr_sec
-            {
-                padding: 50px;
-            }
-
-            .lrvl_wlcm_bnr_mainBox h1 {
-                font-size: 32px;
-                margin: 20px 0;
-            }
-
-            .lrvl_wlcm_mid_lftBox ul li a,
-            .lrvl_wlcm_mid_rht_txtBox ul li a
-            {
-                font-size: 16px;
-            }
-
-            .lrvl_wlcm_mid_rht_txtBox h2
-            {
-                font-size: 26px;
-                margin-bottom: 10px;
-            }
-
-            .lrvl_wlcm_signUp_sec
-            {
-                padding: 50px 0 40px;
-            }
-
-            .lrvl_wlcm_signUp_mainBox h3 {
-                font-size: 26px;
-                line-height: 36px;
-                margin-bottom: 20px;
-            }
-
-            .lrvl_wlcm_signUp_mainBox h3 br
-            {
-                display: none;
-            }
-        }
-
-        @media (max-width: 767px)
-        {
-            .container {
-                width: 100%;
-            }
-
-            .lrvl_wlcm_bnr_sec {
-                padding: 50px 0 40px;
-                text-align: center;
-            }
-
-            .lrvl_wlcm_version
-            {
-                padding-bottom: 0;
-            }
-
-            .lrvl_wlcm_mid_sec {
-                padding-bottom: 30px;
-            }
-
-            .lrvl_wlcm_mid_mainBox {
-                display: block;
-            }
-
-            .lrvl_wlcm_mid_lftBox
-            {
-                margin-bottom: 20px;
-            }
-
-            .lrvl_wlcm_mid_lftBox ul
-            {
-                padding: 20px 0 10px;
-            }
-
-            .lrvl_wlcm_mid_lftBox_fxd {
-                top: 0px;
-                background: #fff;
-                border-bottom: 2px solid #2F39BF;
-            }
-            
-            .lrvl_wlcm_mid_lftBox ul li
-            {
-                display: inline-block;
-            }
-
-            .lrvl_wlcm_mid_lftBox ul li a {
-                font-size: 14px;
-                padding: 10px;
-                background-color: rgba(196, 196, 196, 0.5);
-                border: 0 !important;
-                border-radius: 6px;
-            }
-
-            .lrvl_wlcm_mid_lftBox ul li a.active
-            {
-                color: #fff;
-                background-color: #2F39BF;
-            }
-
-            .lrvl_wlcm_mid_rht_txtBox ul li a {
-                font-size: 15px;
-                padding: 15px;
-                margin-bottom: 10px;
-            }
-        }
-
-        @media (max-width: 500px)
-        {
-            .cw_glb_btn
-            {
-                width: 100%;
-            }
-
-            .lrvl_wlcm_mid_lftBox ul li,
-            .lrvl_wlcm_mid_lftBox ul li a
-            {
-                width: 100%;
-                text-align: center;
+        
+        @media (max-width: 768px) {
+            .qw-section {
+                padding: 50px 0;
             }
         }
     </style>
-  </head>
-  <body>
-    <section class="lrvl_wlcm_bnr_sec">
+</head>
+<body>
+    <!-- Barra de navegación -->
+    <nav class="navbar navbar-expand-lg navbar-dark qw-bg-gradient sticky-top">
         <div class="container">
-            <div class="lrvl_wlcm_bnr_mainBox">
-                <div class="lrvl_wlcm_bnr_imgBox">
-                    <img src="https://www.cloudways.com/wp-content/uploads/2021/02/cw-laravel-logo.png" alt="Cloudways Laravel" class="img-responsive">
+            <a class="navbar-brand fw-bold" href="#">
+                <i class="fas fa-globe me-2"></i>QuickWeb
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#inicio">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#servicios">Servicios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#nosotros">Nosotros</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#faq">Preguntas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('clients.index') }}">Panel Admin</a>
+                    </li>
+                    <li class="nav-item ms-lg-3">
+                        <a class="btn qw-btn-primary" href="#contacto">Contacto</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="qw-bg-gradient qw-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="display-4 fw-bold mb-4">Tu aliado digital para crecer con una web accesible y profesional</h1>
+                    <p class="lead mb-4">En QuickWeb creamos sitios web que no solo se ven bien, sino que están diseñados para que cualquier persona, sin importar su nivel técnico, pueda gestionarlos con facilidad.</p>
+                    <div class="d-flex gap-3">
+                        <a href="#servicios" class="btn qw-btn-primary">Nuestros Servicios</a>
+                        <a href="#contacto" class="btn btn-outline-light">Contactar</a>
+                    </div>
                 </div>
-                <h1>Getting Started with Laravel</h1>
+                <div class="col-lg-6 d-none d-lg-block">
+                    <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Desarrollo web" class="img-fluid rounded-3 shadow">
+                </div>
             </div>
         </div>
     </section>
 
-    <section class="lrvl_wlcm_mid_sec">
+    <!-- Por qué elegirnos -->
+    <section class="qw-section bg-white">
         <div class="container">
-            <div class="lrvl_wlcm_version">
-            <div class="lrvl_wlcm_mid_mainBox">
-                <div class="lrvl_wlcm_mid_lftBox">
-                    <ul>
-                        <li><a href="javascript:void(0);" data-target="section1" class="active">Getting Started Guides</a></li>
-                        <li><a href="javascript:void(0);" data-target="section2">Deployment Guides</a></li>
-                        <li><a href="javascript:void(0);" data-target="section3">Using Cloudways Features</a></li>
-                        <li><a href="javascript:void(0);" data-target="section4">Optimization Guides</a></li>
-                        <li><a href="{{ route('clients.index') }}">Clientes </a></li>
+            <div class="text-center mb-5">
+                <h2 class="fw-bold mb-3">¿Por qué elegir QuickWeb?</h2>
+                <p class="lead text-muted">Ofrecemos soluciones digitales diseñadas específicamente para emprendedores</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3">
+                    <div class="qw-card p-4 text-center">
+                        <div class="qw-card-icon">
+                            <i class="fas fa-universal-access"></i>
+                        </div>
+                        <h4>Diseño Accesible</h4>
+                        <p>Sitios intuitivos que cumplen con estándares de accesibilidad para todos tus clientes.</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-3">
+                    <div class="qw-card p-4 text-center">
+                        <div class="qw-card-icon">
+                            <i class="fas fa-sliders-h"></i>
+                        </div>
+                        <h4>Administración Fácil</h4>
+                        <p>Panel de control sencillo para que actualices tu contenido sin complicaciones.</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-3">
+                    <div class="qw-card p-4 text-center">
+                        <div class="qw-card-icon">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <h4>Soporte Personalizado</h4>
+                        <p>Acompañamiento continuo para que tu negocio crezca en el mundo digital.</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-3">
+                    <div class="qw-card p-4 text-center">
+                        <div class="qw-card-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h4>Hosting Seguro</h4>
+                        <p>Nos encargamos del alojamiento y seguridad para que tu sitio esté siempre disponible.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Servicios -->
+    <section id="servicios" class="qw-section bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold mb-3">Nuestros Servicios</h2>
+                <p class="lead text-muted">Soluciones completas para tu presencia digital</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="qw-card p-4">
+                        <h3 class="text-center mb-4">Básico</h3>
+                        <div class="text-center mb-4">
+                            <span class="display-4 fw-bold">$499</span>
+                            <span class="text-muted">/mes</span>
+                        </div>
+                        <ul class="qw-feature-list">
+                            <li>Diseño web personalizado (1-5 páginas)</li>
+                            <li>Panel de administración básico</li>
+                            <li>Dominio .com.co (1er año)</li>
+                            <li>Hosting compartido</li>
+                            <li>Certificado SSL</li>
+                            <li>Soporte técnico básico</li>
+                        </ul>
+                        <div class="text-center mt-4">
+                            <a href="#contacto" class="btn qw-btn-primary w-100">Contratar</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="qw-card p-4 position-relative" style="border: 2px solid var(--qw-secondary);">
+                        <span class="position-absolute top-0 start-50 translate-middle badge bg-success">Popular</span>
+                        <h3 class="text-center mb-4">Estándar</h3>
+                        <div class="text-center mb-4">
+                            <span class="display-4 fw-bold">$799</span>
+                            <span class="text-muted">/mes</span>
+                        </div>
+                        <ul class="qw-feature-list">
+                            <li>Todo en Básico +</li>
+                            <li>Hasta 10 páginas</li>
+                            <li>Panel de administración avanzado</li>
+                            <li>Integración con redes sociales</li>
+                            <li>Formulario de contacto</li>
+                            <li>Soporte prioritario</li>
+                        </ul>
+                        <div class="text-center mt-4">
+                            <a href="#contacto" class="btn qw-btn-primary w-100">Contratar</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="qw-card p-4">
+                        <h3 class="text-center mb-4">Premium</h3>
+                        <div class="text-center mb-4">
+                            <span class="display-4 fw-bold">$1,199</span>
+                            <span class="text-muted">/mes</span>
+                        </div>
+                        <ul class="qw-feature-list">
+                            <li>Todo en Estándar +</li>
+                            <li>Sitio ilimitado</li>
+                            <li>Tienda online (hasta 50 productos)</li>
+                            <li>Pasarela de pagos</li>
+                            <li>Blog integrado</li>
+                            <li>Soporte 24/7</li>
+                        </ul>
+                        <div class="text-center mt-4">
+                            <a href="#contacto" class="btn qw-btn-primary w-100">Contratar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sobre Nosotros -->
+    <section id="nosotros" class="qw-section bg-white">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Equipo QuickWeb" class="img-fluid rounded-3 shadow">
+                </div>
+                <div class="col-lg-6">
+                    <h2 class="fw-bold mb-4">Sobre Nosotros</h2>
+                    <p>QuickWeb nace con una misión clara: Hacer que el mundo digital sea accesible para todos los emprendedores.</p>
+                    <p>Sabemos que iniciar un negocio es un reto y que muchas veces el entorno tecnológico parece complicado o costoso. Por eso, creamos una solución pensada especialmente para ti: sitios web profesionales, fáciles de administrar y al alcance de cualquier emprendimiento.</p>
+                    
+                    <h4 class="mt-5 mb-3">Nuestra Filosofía</h4>
+                    <ul class="qw-feature-list">
+                        <li>La simplicidad como camino hacia lo funcional</li>
+                        <li>La accesibilidad como derecho, no como lujo</li>
+                        <li>El acompañamiento como clave para el crecimiento</li>
                     </ul>
                 </div>
+            </div>
+        </div>
+    </section>
 
-                <div class="lrvl_wlcm_mid_rhtBox">
-                    <div class="lrvl_wlcm_mid_rht_txtBox" id="section1">
-                        <h2>Getting Started Guides</h2>
-                        <ul>
-                            <li><a href="https://support.cloudways.com/how-do-i-take-my-website-live-from-cloudways/?utm_source=php-stack-page&utm_medium=php-stack-page&utm_campaign=php-stack-page" target="_blank">How Do I Take My Website Live from Cloudways</a></li>
-                            <li><a href="https://support.cloudways.com/deploy-laravel-on-cloudways/?utm_source=php-stack-page&utm_medium=php-stack-page&utm_campaign=php-stack-page" target="_blank">How to Deploy Laravel Project on Cloudways Server</a></li>
-                            <li><a href="https://support.cloudways.com/how-to-manage-your-databases-using-the-integrated-database-manager/?utm_source=php-stack-page&utm_medium=php-stack-page&utm_campaign=php-stack-page" target="_blank">Manage Your Databases Using the Cloudways Database Manager</a></li>
-                            <li><a href="https://support.cloudways.com/configure-gmail-smtp/?utm_source=php-stack-page&utm_medium=php-stack-page&utm_campaign=php-stack-page" target="_blank">How to Configure Gmail SMTP</a></li>
-                            <li><a href="https://www.cloudways.com/blog/setup-https-ssl-on-laravel/?utm_source=php-stack-page&utm_medium=php-stack-page&utm_campaign=php-stack-page" target="_blank">How to Setup HTTPS SSL certificates on Laravel</a></li>
-                            <li><a href="https://www.cloudways.com/blog/integrate-cdn-in-laravel/?utm_source=php-stack-page&utm_medium=php-stack-page&utm_campaign=php-stack-page" target="_blank">Integrate CloudwaysCDN with Laravel Applications</a></li>
-                            <li><a href="https://support.cloudways.com/what-can-i-do-from-the-packages-tab-of-server-settings-packages-section/?utm_source=php-stack-page&utm_medium=php-stack-page&utm_campaign=php-stack-page" target="_blank">What can I do from Packages tab of Cloudways Platform</a></li>
-                        </ul>
+    <!-- Preguntas Frecuentes -->
+    <section id="faq" class="qw-section bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold mb-3">Preguntas Frecuentes</h2>
+                <p class="lead text-muted">Resolvemos tus dudas más comunes</p>
+            </div>
+            
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="qw-faq-item">
+                        <h4 class="qw-faq-question">1. ¿Qué incluye el servicio de creación de mi página web?</h4>
+                        <p>Incluye el diseño personalizado de tu sitio, una página de administración para que puedas editar tu contenido fácilmente, alojamiento web (hosting), dominio .com.co, certificado de seguridad SSL y asesoría básica en contenidos.</p>
                     </div>
-
-                    <div class="lrvl_wlcm_mid_rht_txtBox" id="section2">
-                        <h2>Deployment Guides</h2>
-                        <ul>
-                            <li><a href="https://www.cloudways.com/blog/deploy-through-gitlab/?utm_source=php-stack-page&utm_medium=php-stack-page&utm_campaign=php-stack-page" target="_blank">Deploy Apps Using GitLab on Cloudways Platform</a></li>
-                            <li><a href="https://www.cloudways.com/blog/deploy-php-application/?utm_source=php-stack-page&utm_medium=php-stack-page&utm_campaign=php-stack-page" target="_blank">Deploy PHP Application With Best Web Tools in Minutes</a></li>
-                            <li><a href="https://www.cloudways.com/blog/php-laravel-envoyer-deployment/?utm_source=php-stack-page&utm_medium=php-stack-page&utm_campaign=php-stack-page" target="_blank">Deploy PHP Application via Laravel Envoyer</a></li>
-                            <li><a href="https://www.cloudways.com/blog/deploy-gitlab-ci-cd/?utm_source=php-stack-page&utm_medium=php-stack-page&utm_campaign=php-stack-page" target="_blank">Using GitLab CI/CD on Cloudways</a></li>
-                            <li><a href="https://support.cloudways.com/how-to-automate-git-deployment-using-webhooks/?utm_source=php-stack-page&utm_medium=php-stack-page&utm_campaign=php-stack-page" target="_blank">Automatically Deploy From Git to Server Using Webhooks</a></li>
-                        </ul>
+                    
+                    <div class="qw-faq-item">
+                        <h4 class="qw-faq-question">2. ¿Tengo que saber de programación para administrar mi web?</h4>
+                        <p>No. Te entregamos una interfaz sencilla e intuitiva para que tú mismo puedas actualizar textos, imágenes y productos sin necesidad de conocimientos técnicos.</p>
                     </div>
-
-                    <div class="lrvl_wlcm_mid_rht_txtBox" id="section3">
-                        <h2>Using Cloudways Features</h2>
-                        <ul>
-                            <li><a href="https://www.cloudways.com/blog/install-laravel-horizon/?utm_source=php-stack-page&utm_medium=php-stack-page&utm_campaign=php-stack-page" target="_blank">How to Install Laravel Horizon on Cloudways</a></li>
-                            <li><a href="https://www.cloudways.com/blog/laravel-cron-job-scheduling/?utm_source=php-stack-page&utm_medium=php-stack-page&utm_campaign=php-stack-page" target="_blank">Laravel Cron Jobs Scheduling on Cloudways</a></li>
-                            <li><a href="https://support.cloudways.com/configure-supervisord-on-cloudways/?utm_source=php-stack-page&utm_medium=php-stack-page&utm_campaign=php-stack-page" target="_blank">How to Configure Laravel Supervisord on Cloudways</a></li>
-                            <li><a href="https://support.cloudways.com/how-to-change-php-fpm-settings/?utm_source=php-stack-page&utm_medium=php-stack-page&utm_campaign=php-stack-page" target="_blank">How to Change PHP-FPM Settings</a></li>
-                            <li><a href="https://support.cloudways.com/how-to-install-phpmyadmin-on-cloudways/?utm_source=php-stack-page&utm_medium=php-stack-page&utm_campaign=php-stack-page" target="_blank">How to Install PHPMyAdmin on Cloudways</a></li>
-                            <li><a href="https://support.cloudways.com/can-i-use-cloudflare-cdn/?utm_source=php-stack-page&utm_medium=php-stack-page&utm_campaign=php-stack-page" target="_blank">How to Use Cloudflare CDN on Cloudways</a></li>
-                            <li><a href="https://support.cloudways.com/setting-up-remote-mysql-database-connections/?utm_source=php-stack-page&utm_medium=php-stack-page&utm_campaign=php-stack-page" target="_blank">How to Setup MySQL Remote Connection to Database</a></li>
-                            <li><a href="https://support.cloudways.com/allow-remote-mysql-database-connections/?utm_source=php-stack-page&utm_medium=php-stack-page&utm_campaign=php-stack-page" target="_blank">How to Whitelist IP Addresses for Remote MySQL Connections</a></li>
-                            <li><a href="https://www.cloudways.com/blog/send-email-in-laravel/?utm_source=php-stack-page&utm_medium=php-stack-page&utm_campaign=php-stack-page" target="_blank">How to Send Email in Laravel Using Prebuilt Tools</a></li>
-                        </ul>
+                    
+                    <div class="qw-faq-item">
+                        <h4 class="qw-faq-question">3. ¿Cuánto tiempo tarda en estar lista mi página?</h4>
+                        <p>El tiempo promedio de entrega es de 7 a 10 días hábiles, dependiendo de la rapidez con la que recibamos el contenido (textos, fotos, etc.) y las revisiones necesarias.</p>
                     </div>
-
-                    <div class="lrvl_wlcm_mid_rht_txtBox" id="section4">
-                        <h2>Optimization Guides</h2>
-                        <ul>
-                            <li><a href="https://www.cloudways.com/blog/laravel-performance-optimization/?utm_source=php-stack-page&utm_medium=php-stack-page&utm_campaign=php-stack-page" target="_blank">Ultimate Laravel Performance Optimization Guide</a></li>
-                            <li><a href="https://www.cloudways.com/blog/integrate-laravel-cache/?utm_source=php-stack-page&utm_medium=php-stack-page&utm_campaign=php-stack-page" target="_blank">How to Use Laravel Cache For Fast Performance</a></li>
-                            <li><a href="https://www.cloudways.com/blog/best-laravel-security-practices/?utm_source=php-stack-page&utm_medium=php-stack-page&utm_campaign=php-stack-page" target="_blank">Best Practices to Improve Laravel App's Security</a></li>
-                            <li><a href="https://www.cloudways.com/blog/prevent-laravel-xss-exploits/?utm_source=php-stack-page&utm_medium=php-stack-page&utm_campaign=php-stack-page" target="_blank">Laravel Validation & Sanitization to Prevent XSS Exploits</a></li>
-                        </ul>
+                    
+                    <div class="qw-faq-item">
+                        <h4 class="qw-faq-question">4. ¿Puedo tener una tienda online con carrito de compras?</h4>
+                        <p>Sí. Ofrecemos planes que incluyen funcionalidades de comercio electrónico, pasarelas de pago y gestión de productos.</p>
+                    </div>
+                    
+                    <div class="qw-faq-item">
+                        <h4 class="qw-faq-question">5. ¿El servicio incluye dominio y hosting?</h4>
+                        <p>Sí. Todos nuestros planes incluyen dominio .com.co, alojamiento web (hosting) y certificado SSL, durante el primer año. Luego podrás renovarlos con nosotros a precios accesibles.</p>
+                    </div>
+                    
+                    <div class="text-center mt-5">
+                        <a href="#contacto" class="btn qw-btn-primary">¿Tienes más preguntas? Contáctanos</a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="lrvl_wlcm_signUp_sec">
+    <!-- Contacto -->
+    <section id="contacto" class="qw-section qw-bg-gradient text-white">
         <div class="container">
-            <div class="lrvl_wlcm_signUp_mainBox"> 
-                <h3>Be a Part of Exciting Discussion <br/>on Cloudways User Group</h3>
-                <a href="https://www.facebook.com/groups/CloudwaysUsers" target="_blank" class="cw_glb_btn">JOIN NOW</a>
+            <div class="row justify-content-center">
+                <div class="col-lg-8 text-center">
+                    <h2 class="fw-bold mb-4">¿Listo para comenzar tu proyecto digital?</h2>
+                    <p class="lead mb-5">Contáctanos hoy y da el primer paso para hacer crecer tu negocio con una web accesible, profesional y hecha a tu medida.</p>
+                    
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="p-4 bg-white text-dark rounded-3 h-100">
+                                <i class="fas fa-phone qw-card-icon"></i>
+                                <h4>Teléfono</h4>
+                                <p>+57 123 456 7890</p>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="p-4 bg-white text-dark rounded-3 h-100">
+                                <i class="fas fa-envelope qw-card-icon"></i>
+                                <h4>Email</h4>
+                                <p>info@quickweb.com</p>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="p-4 bg-white text-dark rounded-3 h-100">
+                                <i class="fas fa-map-marker-alt qw-card-icon"></i>
+                                <h4>Ubicación</h4>
+                                <p>Bogotá, Colombia</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <form class="mt-5 bg-white p-4 rounded-3 text-dark">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" placeholder="Nombre completo" required>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="email" class="form-control" placeholder="Correo electrónico" required>
+                            </div>
+                            <div class="col-12">
+                                <input type="text" class="form-control" placeholder="Asunto">
+                            </div>
+                            <div class="col-12">
+                                <textarea class="form-control" rows="4" placeholder="Mensaje" required></textarea>
+                            </div>
+                            <div class="col-12 text-center">
+                                <button type="submit" class="btn qw-btn-primary">Enviar Mensaje</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </section>
 
-    <footer class="lrvl_wlcm_ftr_sec">
-        <p>© 2022 Cloudways Ltd. All rights reserved</p>
+    <!-- Footer -->
+    <footer class="py-4 bg-dark text-white">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="mb-0">© 2023 QuickWeb. Todos los derechos reservados.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="text-white me-3"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="text-white"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+        </div>
     </footer>
 
-    <!-- jQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-
-    <script type="text/javascript">
-        $('.lrvl_wlcm_mid_lftBox ul li a').on('click',function () {
-            let get_data_id = $(this).data('target');
-            $('html, body').stop().animate({
-                scrollTop: $('#' + get_data_id).offset().top - 20
-            }, 500);
-        });
-
-        $(window).on('scroll', () => {
-            let get_win_scroll = $(window).scrollTop();
-            let get_win_height = $(window).height() - 100;
-            let get_top_offset = $('.lrvl_wlcm_mid_sec').offset().top;
-            let get_bottom_offset = $('.lrvl_wlcm_signUp_sec').offset().top;
-            let get_sideNav_width = $('.lrvl_wlcm_mid_lftBox ul').outerWidth();
-
-            //Fixed Right Menu
-            if((get_win_scroll >= get_top_offset) && ((get_win_scroll + get_win_height) <= get_bottom_offset))
-            {
-                $('.lrvl_wlcm_mid_lftBox ul').css('width', get_sideNav_width);
-                $('.lrvl_wlcm_mid_lftBox ul').addClass('lrvl_wlcm_mid_lftBox_fxd');
-            } else {
-                $('.lrvl_wlcm_mid_lftBox ul').removeClass('lrvl_wlcm_mid_lftBox_fxd');
-            }
-
-            //Check Current Fold
-            var get_content_offset = new Array();
-            $('.lrvl_wlcm_mid_rht_txtBox').each(function() {
-                get_content_offset.push($(this).offset().top - 100);
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Script para el login (preparado para implementación) -->
+    <script>
+        // Aquí puedes agregar la lógica para el sistema de login cuando lo implementes
+        document.addEventListener('DOMContentLoaded', function() {
+            // Ejemplo: Scroll suave para los enlaces
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
             });
-
-            for( var i=0; i<= get_content_offset.length; i++){
-                if($(this).scrollTop() >= get_content_offset[i]){
-                    $('.lrvl_wlcm_mid_lftBox ul li a').removeClass('active');
-                    $('.lrvl_wlcm_mid_lftBox ul li a').eq(i).addClass('active');
-                }
-            }
-        });    
+        });
     </script>
-
-  </body>
+</body>
 </html>

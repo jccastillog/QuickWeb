@@ -25,7 +25,7 @@ class ProductSeeder extends Seeder
                 $imageCount = rand(3, 5);
 
                 for ($i = 0; $i < $imageCount; $i++) {
-                    $product->images()->create([
+                    $product->image()->create([
                         'media_id' => \App\Models\Media::factory()->create()->id,
                         'collection' => 'product_gallery',
                         'order' => $i + 1,

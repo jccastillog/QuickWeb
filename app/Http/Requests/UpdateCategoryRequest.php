@@ -17,7 +17,7 @@ class UpdateCategoryRequest extends FormRequest
     public function rules()
     {
         $category = $this->route('category');
-        
+
         return [
             'name' => [
                 'required',
@@ -28,7 +28,7 @@ class UpdateCategoryRequest extends FormRequest
             'description' => 'nullable|string',
             'order' => 'nullable|integer|min:0',
             'featured' => 'nullable|boolean',
-            'image' => 'nullable|image|max:2048' // 2MB máximo para imágenes
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ];
     }
 
@@ -36,8 +36,8 @@ class UpdateCategoryRequest extends FormRequest
     {
         return [
             'name.unique' => 'Ya existe una categoría con este nombre',
-            'image.max' => 'La imagen no debe pesar más de 2MB',
-            'image.image' => 'El archivo debe ser una imagen válida'
+            'categoryImage.max' => 'La imagen no debe pesar más de 2MB',
+            'categoryImage.image' => 'El archivo debe ser una imagen válida'
         ];
     }
 }

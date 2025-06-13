@@ -16,10 +16,20 @@ class StoreCategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:categories,name',
             'description' => 'nullable|string',
             'order' => 'nullable|integer|min:0',
-            'featured' => 'nullable|boolean'
+            'featured' => 'nullable|boolean'  ,
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'name.unique' => 'Ya existe una categoría con este nombre',
+            'image.max' => 'La imagen no debe pesar más de 2MB',
+            'image.image' => 'El archivo debe ser una imagen válida'
         ];
     }
 }

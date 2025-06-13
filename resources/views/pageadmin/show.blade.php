@@ -46,17 +46,20 @@
 
         <!-- Pestaña de Categorías -->
         <div class="tab-pane fade" id="categories" role="tabpanel">
-            @include('pageadmin.partials.categories') 
+            @include('pageadmin.partials.categories')
         </div>
 
         <!-- Pestaña de Productos -->
         <div class="tab-pane fade" id="products" role="tabpanel">
-            @include('pageadmin.partials.products') 
+            @include('pageadmin.products.index', [
+                'client' => $client,
+                'products' => $client->products()->with(['category', 'image.media'])->paginate(12),
+            ])
         </div>
 
         <!-- Pestaña de Ofertas -->
         <div class="tab-pane fade" id="offers" role="tabpanel">
-            @include('pageadmin.partials.offers') 
+            @include('pageadmin.partials.offers')
         </div>
     </div>
 </div>
@@ -79,13 +82,13 @@
     // Activar pestañas y guardar la selección
     document.addEventListener('DOMContentLoaded', function() {
         const tabElms = document.querySelectorAll('button[data-bs-toggle="tab"]');
-        
+
         tabElms.forEach(tabEl => {
             tabEl.addEventListener('shown.bs.tab', function(event) {
                 localStorage.setItem('lastTab', event.target.id);
             });
         });
-        
+
         const lastTab = localStorage.getItem('lastTab');
         if (lastTab) {
             const tab = new bootstrap.Tab(document.getElementById(lastTab));

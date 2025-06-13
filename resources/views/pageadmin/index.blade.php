@@ -1,4 +1,4 @@
-    @extends('pageadmin.layouts.app')
+@extends('pageadmin.layouts.app')
 
 @section('content')
     <div class="container-fluid">
@@ -49,7 +49,7 @@
                                     @endforelse
                                 </tbody>
                             </table>
-                            
+
                             <div class="pagination">
                                 {{ $clients->links('pagination::bootstrap-5') }}
                             </div>
@@ -77,22 +77,22 @@
                             @endif
                             <!-- Sección de Información Básica -->
                             <div class="form-row mb-3">
-                                <div class="form-group col-md-12 d-flex justify-content-start align-items-center"> 
+                                <div class="form-group col-md-12 d-flex justify-content-start align-items-center">
                                     <div class="mr-3">
                                         <label for="logo">Logo</label>
                                         <div>
                                             @if($client->logo && $client->logo->media)
-                                                <img src="{{ $client->logo->media->full_url }}" 
-                                                    alt="{{ $client->store_name }}" 
-                                                    class="img-thumbnail" 
+                                                <img src="{{ $client->logo->media->full_url }}"
+                                                    alt="{{ $client->store_name }}"
+                                                    class="img-thumbnail"
                                                     style="width: 80px; height: 80px; object-fit: contain;">
                                             @else
                                                 <span class="text-muted">Sin logo</span>
                                             @endif
                                         </div>
                                         <input type="file" class="form-control-file @error('logo') is-invalid @enderror"
-                                            id="logo" 
-                                            name="logo" 
+                                            id="logo"
+                                            name="logo"
                                             accept="image/*">
                                         @error('logo')
                                             <div class="invalid-feedback">{{ $message }}</div>
@@ -103,9 +103,9 @@
                                         <label for="favicon">Favicon</label>
                                         <div>
                                             @if($client->favicon && $client->favicon->media)
-                                                <img src="{{ $client->favicon->media->full_url }}" 
-                                                    alt="{{ $client->store_name }}" 
-                                                    class="img-thumbnail" 
+                                                <img src="{{ $client->favicon->media->full_url }}"
+                                                    alt="{{ $client->store_name }}"
+                                                    class="img-thumbnail"
                                                     style="width: 80px; height: 80px; object-fit: contain;">
                                             @else
                                                 <span class="text-muted">Sin favicon</span>
@@ -210,21 +210,27 @@
                                             {{ old('timezone', $client->timezone) == $zone ? 'selected' : '' }}>
                                             {{ $zone }}</option>
                                     @endforeach
+                                </select>
                             </div>
 
-                            <div class="form-group form-check">
-                                <input type="checkbox" class="form-check-input" id="active" name="active" value="1"
-                                    {{ old('active', $client->active) ? 'checked' : '' }}>
-                                <label class="form-check-label" for="active">Tienda Activa</label>
+                            <div class="form-group">
+                                <label for="active">Estado</label>
+                                <select class="form-control @error('active') is-invalid @enderror" id="active" name="active">
+                                    <option value="1" {{ old('active', $client->active) ? 'selected' : '' }}>Activo</option>
+                                    <option value="0" {{ !old('active', $client->active) ? 'selected' : '' }}>Inactivo</option>
+                                </select>
+                                @error('active')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <div class="d-flex justify-content-between">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-primary mt-2">
                                     <i class="fas fa-save"></i> {{ $client->exists ? 'Actualizar' : 'Guardar' }}
                                 </button>
 
                                 @if ($client->exists)
-                                    <button type="button" class="btn btn-danger"
+                                    <button type="button" class="btn btn-danger mt-2"
                                         onclick="if(confirm('¿Eliminar esta tienda?')) {
                                             document.getElementById('delete-form').submit();
                                         }">

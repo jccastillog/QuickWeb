@@ -9,6 +9,7 @@ use App\Models\Media;
 use App\Models\Mediable;
 use App\Models\SiteSettings;
 use App\Models\SocialNetwork;
+use App\Models\Testimonial;
 use Illuminate\Database\Seeder;
 
 class ClientSeeder extends Seeder
@@ -20,6 +21,7 @@ class ClientSeeder extends Seeder
             ->count(5)
             ->has(SiteSettings::factory())
             ->has(SocialNetwork::factory()->count(3))
+            ->has(Testimonial::factory()->count(3))
             ->create();
 
         // Asignar imágenes a los clientes

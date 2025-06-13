@@ -49,7 +49,7 @@ class Client extends Model
 
     public function products()
     {
-        return $this->hasMany(Product::class)->with(['images', 'category', 'offers']);
+        return $this->hasMany(Product::class)->with(['image', 'category', 'offers']);
     }
 
     public function testimonials()
@@ -89,63 +89,5 @@ class Client extends Model
     public function getActiveStatusAttribute()
     {
         return $this->active ? 'Activo' : 'Inactivo';
-    }
-
-    public function uploadLogo($file)
-    {
-        if ($this->logo) {
-            $this->logo->delete();
-        }
-
-        $path = $file->store('clients/logos', 'public');
-        $filename = 'logo-' . $this->id . '-' . time() . '.' . $file->getClientOriginalExtension();
-        
-        $media = Media::create([
-            'client_id' => $this->id,
-            'uuid' => Str::uuid()->toString(),
-            'type' => 'logo',
-            'name' => 'Logo de ' . $this->store_name,
-            'filename' => $filename,
-            'path' => $path,
-            'full_url' => asset('storage/' . $path),
-            'mime_type' => $file->getClientMimeType(),
-            'size' => $file->getSize(),
-            'disk' => 'public',
-            'is_approved' => true,
-        ]);
-
-        return $this->logo()->create([
-            'media_id' => $media->id,
-            'collection' => 'logo'
-        ]);
-    }
-
-        public function uploadFavicon($file)
-    {
-        if ($this->favicon) {
-            $this->favicon->delete();
-        }
-
-        $path = $file->store('clients/favicons', 'public');
-        $filename = 'favicon-' . $this->id . '-' . time() . '.' . $file->getClientOriginalExtension();
-        
-        $media = Media::create([
-            'client_id' => $this->id,
-            'uuid' => Str::uuid()->toString(),
-            'type' => 'logo',
-            'name' => 'Favicon de ' . $this->store_name,
-            'filename' => $filename,
-            'path' => $path,
-            'full_url' => asset('storage/' . $path),
-            'mime_type' => $file->getClientMimeType(),
-            'size' => $file->getSize(),
-            'disk' => 'public',
-            'is_approved' => true,
-        ]);
-
-        return $this->logo()->create([
-            'media_id' => $media->id,
-            'collection' => 'favicon'
-        ]);
     }
 }

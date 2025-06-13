@@ -51,7 +51,7 @@ class Product extends Model
     }
 
     // Relaciones polimórficas para imágenes
-    public function images()
+    public function image()
     {
         return $this->morphMany(Mediable::class, 'mediable')
             ->where('collection', 'product_gallery')
@@ -61,7 +61,7 @@ class Product extends Model
     public function featuredImage()
     {
         return $this->morphOne(Mediable::class, 'mediable')
-            ->where('collection', 'product_gallery')
+            ->where('collection', 'product_featured')
             ->orderBy('order');
     }
 

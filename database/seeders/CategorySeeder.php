@@ -21,7 +21,7 @@ class CategorySeeder extends Seeder
 
             $clients->each(function ($client) {
                 Category::factory()
-                    ->count(8)
+                    ->count(5)
                     ->create([
                         'client_id' => $client->id,
                     ]);

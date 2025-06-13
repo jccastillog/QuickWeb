@@ -9,21 +9,24 @@ use App\Models\Product;
 
 class StoreFrontController extends Controller
 {
-    public function show($domain)
+    public function show($domain = null)
     {
-        // El cliente ya está disponible gracias al middleware
+        // Obtener el cliente del middleware
         $client = request()->attributes->get('currentClient');
 
-        $client = Client::with(['siteSettings', 'socialNetworks'])
-            ->where('domain', $domain)
-            ->firstOrFail();
+        // Si no hay cliente, abortar
+        if (!$client) {
+            abort(404, 'Tienda no encontrada');
+        }
+
+        // Cargar relaciones necesarias
+        $client->load(['siteSettings', 'socialNetworks']);
 
         $categories = Category::with(['image'])
             ->where('client_id', $client->id)
-            ->where('active', true)
             ->get();
 
-        $featuredProducts = Product::with(['images'])
+        $featuredProducts = Product::with(['image'])
             ->whereHas('category', function($query) use ($client) {
                 $query->where('client_id', $client->id);
             })
@@ -33,16 +36,14 @@ class StoreFrontController extends Controller
             ->get();
 
         return view('storefront.themes.default.home', compact('client', 'categories', 'featuredProducts'));
-        
-        // Resto de la lógica igual...
     }
 
     public function showCategory($domain, $categorySlug)
     {
         $client = Client::where('domain', $domain)->firstOrFail();
-        
+
         $category = Category::with(['products' => function($query) {
-                        $query->with(['images'])->where('active', true);
+                        $query->with(['image'])->where('active', true);
                     }])
                     ->where('client_id', $client->id)
                     ->where('slug', $categorySlug)
@@ -55,7 +56,7 @@ class StoreFrontController extends Controller
     {
         $client = Client::where('domain', $domain)->firstOrFail();
 
-        $product = Product::with(['category', 'images'])
+        $product = Product::with(['category', 'image'])
             ->whereHas('category', function($query) use ($client) {
                 $query->where('client_id', $client->id);
             })
@@ -73,13 +74,13 @@ class StoreFrontController extends Controller
 
     public function getStoreData($domain)
     {
-        $client = Client::with(['siteSettings', 'socialNetworks' /*, 'plans', 'pages', 'testimonials' */])
+        $client = Client::with(['siteSettings', 'socialNetworks' , 'pages', 'testimonials', 'offers'])
             ->where('domain', $domain)
             ->firstOrFail();
 
         $categories = Category::with([
             'products' => function ($query) {
-                $query->where('active', true)->with(['images']);
+                $query->where('active', true)->with(['image']);
             }
         ])->where('client_id', $client->id)
             ->get();
@@ -88,14 +89,14 @@ class StoreFrontController extends Controller
             'success' => true,
             'client' => $client,
             'categories' => $categories,
-        ]); 
+        ]);
     }
 
     public function getProduct($domain, $productSlug)
     {
         $client = Client::where('domain', $domain)->firstOrFail();
 
-        $product = Product::with(['category', 'images'])
+        $product = Product::with(['category', 'image'])
             ->whereHas('category', function ($query) use ($client) {
                 $query->where('client_id', $client->id);
             })

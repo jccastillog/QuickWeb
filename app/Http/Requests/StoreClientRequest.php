@@ -26,8 +26,8 @@ class StoreClientRequest extends FormRequest
             'font' => 'nullable|string|max:255',
             'active' => 'nullable|boolean',
             'expires_at' => 'nullable|date',
-            'logo' => 'nullable|image|max:2048',
-            'favicon' => 'nullable|image|max:2048',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'favicon' => 'nullable|image|mimes:png,ico|max:1024',
         ];
     }
 

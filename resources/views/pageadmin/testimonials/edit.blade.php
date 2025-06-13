@@ -44,12 +44,12 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="testimonial_image" class="form-label">Imagen del Autor</label>
-                                <input type="file" class="form-control" id="testimonial_image" name="testimonial_image">
+                                <label for="image" class="form-label">Imagen del Autor</label>
+                                <input type="file" class="form-control" id="image" name="image">
 
-                                @if ($testimonial->testimonialImage)
+                                @if ($testimonial->image)
                                     <div class="mt-2">
-                                        <img src="{{ asset('storage/' . $testimonial->testimonialImage->media->path) }}"
+                                        <img src="{{ asset('storage/' . $testimonial->image->media->path) }}"
                                             alt="{{ $testimonial->author_name }}" class="img-thumbnail"
                                             style="max-width: 150px;">
                                         <div class="form-check mt-2">
@@ -69,7 +69,7 @@
                                     value="{{ old('order', $testimonial->order) }}">
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-md-3 mb-2">
                                 <div class="form-group">
                                     <label for="active">Estado</label>
                                     <select class="form-control @error('active') is-invalid @enderror" id="active"

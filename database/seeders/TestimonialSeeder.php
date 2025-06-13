@@ -22,7 +22,7 @@ class TestimonialSeeder extends Seeder
             // Asignar imágenes a algunos testimonios (50% de probabilidad)
             $testimonials->each(function ($testimonial) {
                 if (rand(0, 1)) {
-                    $testimonial->authorImage()->create([
+                    $testimonial->testimonialImage()->create([
                         'media_id' => \App\Models\Media::factory()->create()->id,
                         'collection' => 'testimonial_image',
                         'custom_properties' => [

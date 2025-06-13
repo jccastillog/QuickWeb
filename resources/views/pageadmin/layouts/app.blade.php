@@ -35,6 +35,12 @@
                         <i class="bi bi-people-fill me-2"></i> Gestionar Clientes
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('welcome') }}"
+                        class="nav-link text-black">
+                        <i class="bi bi-people-fill me-2"></i> Página Inicial
+                    </a>
+                </li>
                 <!-- Agregar más items luego -->
             </ul>
         </div>
