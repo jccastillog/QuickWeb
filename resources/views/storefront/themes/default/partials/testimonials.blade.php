@@ -1,4 +1,4 @@
-<section id="testimonios" class="py-5 bg-light">
+<section id="testimonios" class="py-5">
     <div class="container">
         <h2 class="text-center mb-4">{{ __('Testimonios') }}</h2>
         <div id="carouselTestimonios" class="carousel slide" data-bs-ride="carousel">
@@ -6,8 +6,8 @@
                 @foreach ($client->testimonials as $key => $testimonial)
                     <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
                         <div class="d-flex flex-column justify-content-center align-items-center">
-                            @if ($testimonial->image_path)
-                                <img src="{{ asset($testimonial->image_path) }}" class="testimonial-img"
+                            @if ($testimonial->image)
+                                <img src="{{ $testimonial->image->media->full_url }}" class="img-fluid rounded-3 shadow"
                                     alt="{{ $testimonial->author_name }}">
                             @endif
                             <p class="mt-3 testimonial-text">{{ $testimonial->content }}</p>

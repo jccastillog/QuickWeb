@@ -7,7 +7,8 @@
         <div class="col-12">
             <div class="d-flex justify-content-between align-items-center">
                 <h1 class="mb-0">
-                    <i class="bi bi-shop"></i> {{ $client->store_name }}
+                    <i class="bi bi-shop"></i> 
+                    <a href="http://127.0.0.1:8000/{{ $client->domain }}">{{ $client->store_name }} </a>
                 </h1>
                 <div>
                     <a href="{{ route('clients.edit', $client) }}" class="btn btn-warning">

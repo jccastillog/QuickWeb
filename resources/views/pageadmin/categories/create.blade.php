@@ -13,7 +13,7 @@
                         </a>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('clients.categories.store', $client) }}" method="POST"
+                        <form action="{{ route('categories.store', $client) }}" method="POST"
                             enctype="multipart/form-data">
                             @csrf
 

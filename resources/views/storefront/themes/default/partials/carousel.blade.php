@@ -1,39 +1,40 @@
-<div id="carouselIndicators" class="carousel slide">
-    @if($client->carouselImages && count($client->carouselImages) > 0)
-        <!-- Mostrar carrusel normal si hay imágenes -->
+<div id="clientCarousel" class="carousel slide" data-bs-ride="carousel">
+    @if ($allImages && $allImages->count() > 0)
+        <!-- Indicadores -->
         <div class="carousel-indicators">
-            @foreach($client->carouselImages as $key => $image)
-                <button type="button" 
-                        data-bs-target="#carouselIndicators" 
-                        data-bs-slide-to="{{ $key }}" 
-                        class="{{ $loop->first ? 'active' : '' }}" 
-                        aria-label="Slide {{ $key + 1 }}"></button>
+            @foreach ($allImages as $key => $media)
+                <button type="button" data-bs-target="#clientCarousel" data-bs-slide-to="{{ $key }}"
+                    class="{{ $loop->first ? 'active' : '' }}"></button>
             @endforeach
         </div>
+
+        <!-- Imágenes -->
         <div class="carousel-inner">
-            @foreach($client->carouselImages as $key => $image)
+            @foreach ($allImages as $key => $media)
                 <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
-                    <img src="{{ asset($image->path) }}" class="d-block w-100" alt="Slide {{ $key + 1 }}">
+                    <img src="{{ $media->full_url }}" class="d-block w-100" style="height: 500px; object-fit: cover;"
+                        alt="Imagen {{ $key + 1 }}">
                 </div>
             @endforeach
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselIndicators" data-bs-slide="prev">
+
+        <!-- Controles -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#clientCarousel" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
+            <span class="visually-hidden">Anterior</span>
         </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselIndicators" data-bs-slide="next">
+        <button class="carousel-control-next" type="button" data-bs-target="#clientCarousel" data-bs-slide="next">
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
+            <span class="visually-hidden">Siguiente</span>
         </button>
     @else
-        <!-- Mostrar mensaje por defecto cuando no hay imágenes -->
+        <!-- Mensaje cuando no hay imágenes -->
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <div class="d-block w-100 bg-light text-center p-5" style="height: 300px;">
+                <div class="d-block w-100 bg-light text-center p-5" style="height: 500px;">
                     <div class="d-flex flex-column justify-content-center h-100">
                         <i class="fas fa-image fa-4x text-muted mb-3"></i>
                         <h4 class="text-muted">No hay imágenes disponibles</h4>
-                        <p class="text-muted">El carrusel se mostrará aquí cuando se agreguen imágenes</p>
                     </div>
                 </div>
             </div>

@@ -175,7 +175,7 @@ Route::get('/test/store/{domain?}', function ($domain = 'tienda1.test') {
 
 // Rutas específicas para cada tienda
 Route::group(['middleware' => 'web'], function() {
-    // Ruta para desarrollo local (localhost/dominio)
+
     Route::group(['prefix' => '{domain}'], function() {
         Route::get('/', [StoreFrontController::class, 'show'])->name('storefront.home');
         Route::get('/category/{categorySlug}', [StoreFrontController::class, 'showCategory'])->name('storefront.category');

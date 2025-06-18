@@ -44,7 +44,7 @@ class UpdateProductRequest extends FormRequest
             ],
             'featured' => 'required|boolean',
             'active' => 'required|boolean',
-            'image' => 'nullable|image|max:2048' // Para múltiples imágenes
+            'image' => 'nullable|image|max:4096' // Para múltiples imágenes
         ];
     }
 

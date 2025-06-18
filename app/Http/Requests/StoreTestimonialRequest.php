@@ -22,7 +22,7 @@ class StoreTestimonialRequest extends FormRequest
             'rating' => 'required|integer|min:1|max:5',
             'order' => 'nullable|integer|min:0',
             'active' => 'nullable|boolean',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:4096',
         ];
     }
 }

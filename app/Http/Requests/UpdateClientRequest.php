@@ -31,7 +31,7 @@ class UpdateClientRequest extends FormRequest
             'timezone' => 'nullable|string|max:255',
             'active' => 'nullable|boolean',
             'expires_at' => 'nullable|date',
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:4096',
             'favicon' => 'nullable|image|mimes:png,ico|max:1024',
             'remove_logo' => 'nullable|boolean',
             'remove_favicon' => 'nullable|boolean',

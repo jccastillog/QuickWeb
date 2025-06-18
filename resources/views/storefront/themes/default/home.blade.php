@@ -5,7 +5,7 @@
     @include('storefront.themes.default.partials.carousel')
 
     <!-- Sección de Categorías -->
-    <section id="categorias" class="py-5">
+    <section id="categorias" class="py-5 bg-light">
         <div class="container">
             <h2 class="text-center mb-4">{{ __('Categorías') }}</h2>
             @foreach ($categories as $category)
@@ -20,7 +20,7 @@
                     </div>
                     <div class="col-md-6 text-center">
                         @if ($category->image)
-                            <img src="{{ asset($category->image->path) }}" class="img-fluid" alt="{{ $category->name }}">
+                            <img src="{{ $category->image->media->full_url }}" class="img-fluid rounded-3 shadow" alt="{{ $category->name }}">
                         @endif
                     </div>
                 </div>
@@ -36,10 +36,16 @@
                 @foreach ($featuredProducts as $product)
                     <div class="col-md-4 mb-4">
                         <div class="card product-card p-3 h-100">
-                            @if ($product->image->count() > 0)
-                                <img src="{{ asset($product->image->first()->path) }}" class="img-fluid"
-                                    alt="{{ $product->name }}">
+
+                            @if ($product->image->isNotEmpty())
+                                @foreach ($product->image as $image)
+                                    @if ($image->media)
+                                        <img src="{{ $image->media->full_url }}" class="img-fluid rounded-3 shadow" alt="{{ $product->name }}">
+                                        @break // Muestra solo la primera imagen
+                                    @endif
+                                @endforeach
                             @endif
+
                             <h4 class="mt-3">{{ $product->name }}</h4>
                             <p>{{ Str::limit($product->description, 100) }}</p>
                             <div class="mt-auto">
@@ -55,6 +61,9 @@
             </div>
         </div>
     </section>
+
+    <!-- Sección de Ofertas -->
+    @include('storefront.themes.default.partials.offers')
 
     <!-- Sección de Testimonios -->
     @include('storefront.themes.default.partials.testimonials')
