@@ -9,14 +9,17 @@ class IdentifyClient
 {
     public function handle($request, Closure $next)
     {
-        if ($request->is('clients*')) {
-            return $next($request);
-        }
-        if ($request->is('clients.categories.create')) {
-            return $next($request);
-        }
-        if ($request->is('pageadmin')) {
-            return $next($request);
+        $exemptPaths = [
+            '/',
+            'pageadmin',
+            'clients*',
+            'clients.categories.create'
+        ];
+
+        foreach ($exemptPaths as $path) {
+            if ($request->is($path)) {
+                return $next($request);
+            }
         }
 
         $domain = $this->extractDomain($request);

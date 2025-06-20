@@ -184,9 +184,7 @@ Route::group(['middleware' => 'web'], function() {
 
     // Rutas directas (para producción)
     Route::get('/', function() {
-        // Redirigir a la ruta con dominio si se accede directamente a /
-        $defaultClient = config('client.default_client');
-        return redirect("/{$defaultClient}");
+        return view('welcome');
     });
 });
 
