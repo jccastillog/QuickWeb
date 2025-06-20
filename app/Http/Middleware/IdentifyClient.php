@@ -41,14 +41,22 @@ class IdentifyClient
 
     protected function extractDomain($request)
     {
-        $host = $request->getHost();
-        
-        // Si es localhost o IP local, usa el primer segmento de la URL como dominio
+        $host = $request->getHost(); // Ej: "cliente1.quickweb.com.co" o "localhost"
+
+        // Modo local: usar segmento de URL
         if (in_array($host, ['localhost', '127.0.0.1'])) {
-            return $request->segment(1) ?: config('app.default_client');
+            return $request->segment(1) ?: config('client.default_client');
         }
-        
-        // Para entornos de producción, usa el host completo
-        return $host;
+
+        // Producción: usar subdominio
+        $parts = explode('.', $host);
+
+        // Si el dominio tiene al menos 3 partes, asumimos que el primero es el cliente
+        if (count($parts) >= 3) {
+            return $parts[0]; // cliente1
+        }
+
+        // Si no hay subdominio (acceso directo al dominio raíz), usa cliente por defecto
+        return config('client.default_client');
     }
 }
