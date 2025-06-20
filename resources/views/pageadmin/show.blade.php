@@ -10,7 +10,7 @@
                     <i class="bi bi-shop"></i> 
                     <a href="{{ app()->environment('local') 
                         ? 'http://127.0.0.1:8000/' . $client->domain 
-                        : url('/' . $client->domain) }}">
+                        : 'https://' . $client->domain }}">
                         {{ $client->store_name }}
                     </a>
                 </h1>
