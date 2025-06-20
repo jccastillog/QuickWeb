@@ -183,20 +183,10 @@ Route::group(['middleware' => 'web'], function() {
     });
 
     // Rutas directas (para producción)
-    /* Route::get('/', function() {
-        return view('welcome');
-    }); */
-
-    Route::get('/', function () {
-        $host = request()->getHost();
-        $client = \App\Models\Client::where('domain', $host)->first();
-
-        if ($client) {
-            return app(StoreFrontController::class)->show(request());
-        }
-
+    Route::get('/', function() {
         return view('welcome');
     });
+
 
 });
 
