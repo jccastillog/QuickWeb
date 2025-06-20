@@ -192,14 +192,12 @@ if (app()->environment('production')) {
         Route::get('/', function() {
             return view('welcome');
         });
-});
+    });
 }
 
 
 
 
-
-// Rutas específicas para cada tienda
 
 
 

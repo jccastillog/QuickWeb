@@ -48,15 +48,7 @@ class IdentifyClient
             return $request->segment(1) ?: config('client.default_client');
         }
 
-        // Producción: usar subdominio
-        $parts = explode('.', $host);
-
-        // Si el dominio tiene al menos 3 partes, asumimos que el primero es el cliente
-        if (count($parts) >= 3) {
-            return $parts[0]; // cliente1
-        }
-
         // Si no hay subdominio (acceso directo al dominio raíz), usa cliente por defecto
-        return config('client.default_client');
+        return $host;
     }
 }
