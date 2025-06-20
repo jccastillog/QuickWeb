@@ -110,7 +110,6 @@ Route::get('clients/{client}/site-settings/edit', [SiteSettingsController::class
 Route::put('clients/{client}/site-settings', [SiteSettingsController::class, 'update'])
     ->name('site-settings.update');
 
-//Rutas para Social Networks
 Route::prefix('clients/{client}/social-networks')->group(function () {
     Route::get('/create', [SocialNetworkController::class, 'create'])->name('social-networks.create');
     Route::post('/', [SocialNetworkController::class, 'store'])->name('social-networks.store');
@@ -161,9 +160,6 @@ Route::prefix('clients/{client}/offers')->group(function () {
     Route::delete('/{offer}', [OfferController::class, 'destroy'])->name('offers.destroy');
 });
 
-
-
-
 // routes/web.php
 
 Route::get('/test/store/{domain?}', function ($domain = 'tienda1.test') {
@@ -172,6 +168,11 @@ Route::get('/test/store/{domain?}', function ($domain = 'tienda1.test') {
 
 
 if (app()->environment('production')) {
+    // Ruta para el dominio raíz sin subdominio
+        Route::get('/', function () {
+            return view('welcome'); // o redirige a un cliente por defecto si prefieres
+        });
+
     // rutas para subdominios
     Route::domain('{client}.quickweb.com.co')->group(function () {
         Route::get('/', [StoreFrontController::class, 'show'])->name('storefront.home');
