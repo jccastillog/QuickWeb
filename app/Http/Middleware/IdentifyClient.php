@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use App\Models\Client;
+use Illuminate\Support\Str;
 
 class IdentifyClient
 {
@@ -42,10 +43,15 @@ class IdentifyClient
     protected function extractDomain($request)
     {
         $host = $request->getHost(); // Ej: "cliente1.quickweb.com.co" o "localhost"
+        $base = 'quickweb.com.co';
 
         // Modo local: usar segmento de URL
         if (in_array($host, ['localhost', '127.0.0.1'])) {
             return $request->segment(1) ?: config('client.default_client');
+        }
+
+        if (Str::endsWith($host, $base)) {
+            return Str::before($host, '.' . $base); // devuelve 'quickweb'
         }
 
         // Si no hay subdominio (acceso directo al dominio raíz), usa cliente por defecto

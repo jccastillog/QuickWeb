@@ -168,7 +168,7 @@ Route::get('/test/store/{domain?}', function ($domain = 'tienda1.test') {
 
 
 if (app()->environment('production')) {
-    // Ruta para el dominio raíz sin subdominio
+
         Route::get('/', function () {
             return view('welcome'); // o redirige a un cliente por defecto si prefieres
         });
