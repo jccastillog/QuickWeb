@@ -53,7 +53,7 @@
                                 <tr>
                                     <th>Dominio:</th>
                                     <td>
-                                        <a href="http://{{ $client->domain }}" target="_blank">
+                                        <a href="{{ $client->url }}" target="_blank">
                                             {{ $client->domain }}
                                             <i class="bi bi-box-arrow-up-right ms-1"></i>
                                         </a>

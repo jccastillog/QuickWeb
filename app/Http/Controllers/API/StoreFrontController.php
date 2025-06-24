@@ -9,7 +9,7 @@ use App\Models\Product;
 
 class StoreFrontController extends Controller
 {
-    public function show($domain = null)
+    public function show()
     {
         \Log::info('[StoreFrontController] Entrando a show()');
 

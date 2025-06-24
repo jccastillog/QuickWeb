@@ -8,9 +8,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <h1 class="mb-0">
                     <i class="bi bi-shop"></i> 
-                    <a href="{{ app()->environment('local') 
-                        ? 'http://127.0.0.1:8000/' . $client->domain 
-                        : 'https://' . $client->domain }}">
+                    <a href="{{ $client->url }}">
                         {{ $client->store_name }}
                     </a>
                 </h1>

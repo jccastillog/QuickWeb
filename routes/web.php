@@ -169,24 +169,22 @@ Route::get('/test/store/{domain?}', function ($domain = 'tienda1.test') {
 
 if (app()->environment('production')) {
 
+        \Log::info('[Routes] Cargando rutas para producción', ['environment' => app()->environment()]);
+    // rutas para subdominios
+        Route::domain('{client}.quickweb.com.co')
+            ->middleware(['web', 'identify.client'])
+            ->group(function () {
+                Route::get('/', [StoreFrontController::class, 'show'])->name('storefront.home');
+            });
+
         Route::get('/', function () {
             return view('welcome'); // o redirige a un cliente por defecto si prefieres
         });
-
-    // rutas para subdominios
-    Route::domain('{client}.quickweb.com.co')->group(function () {
-        Route::get('/', [StoreFrontController::class, 'show'])->name('storefront.home');
-        Route::get('/category/{categorySlug}', [StoreFrontController::class, 'showCategory'])->name('storefront.category');
-        Route::get('/product/{productSlug}', [StoreFrontController::class, 'showProduct'])->name('storefront.product');
-    });
 } else {
     Route::group(['middleware' => 'web'], function() {
         Route::group(['prefix' => '{domain}'], function() {
             Route::get('/', [StoreFrontController::class, 'show'])->name('storefront.home');
-            Route::get('/category/{categorySlug}', [StoreFrontController::class, 'showCategory'])->name('storefront.category');
-            Route::get('/product/{productSlug}', [StoreFrontController::class, 'showProduct'])->name('storefront.product');
         });
-
         // Rutas directas (para producción)
         Route::get('/', function() {
             return view('welcome');

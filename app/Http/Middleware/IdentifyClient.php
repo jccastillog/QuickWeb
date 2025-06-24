@@ -10,8 +10,8 @@ class IdentifyClient
 {
     public function handle($request, Closure $next)
     {
+        \Log::info('[Middleware] Ejecutando IdentifyClient para: ' . $request->getHost());
         $exemptPaths = [
-            '/',
             'pageadmin',
             'clients*',
             'clients.categories.create'
@@ -24,29 +24,22 @@ class IdentifyClient
         }
 
         $domain = $this->extractDomain($request);
+        \Log::info('[Middleware] Dominio extraído: ' . $domain);
         
         $client = Client::where('domain', $domain)->first();
+        
+        // Compartir el cliente con todas las vistas
+        view()->share('currentClient', $client);
 
-        \Log::info('[Middleware] Host detectado: ' . $request->getHost());
-        \Log::info('[Middleware] Dominio interpretado: ' . $domain);
+        // Inyectar en todas las solicitudes
+        $request->attributes->add(['currentClient' => $client]);
+
         if (!$client) {
             \Log::warning('[Middleware] Cliente no encontrado para: ' . $domain);
             abort(404, 'Tienda no encontrada');
         }
 
         \Log::info('[Middleware] Cliente encontrado: ' . $client->store_name);
-
-
-
-        if (!$client) {
-            abort(404, 'Tienda no encontrada');
-        }
-
-        // Compartir el cliente con todas las vistas
-        view()->share('currentClient', $client);
-
-        // Inyectar en todas las solicitudes
-        $request->attributes->add(['currentClient' => $client]);
 
         return $next($request);
     }
@@ -61,11 +54,10 @@ class IdentifyClient
             return $request->segment(1) ?: config('client.default_client');
         }
 
-        if (Str::endsWith($host, $base)) {
-            return Str::before($host, '.' . $base); // devuelve 'quickweb'
+        if (Str::endsWith($host, $base) && $host !== $base) {
+            return Str::before($host, '.' . $base);
         }
 
-        // Si no hay subdominio (acceso directo al dominio raíz), usa cliente por defecto
         return $host;
     }
 }

@@ -55,11 +55,6 @@
                                                 class="badge bg-light text-dark">{{ $offer->promo_code }}</span></small>
                                     </div>
                                 @endif
-
-                                <a href="{{ route('storefront.product', ['domain' => $client->domain, 'productSlug' => $product->slug]) }}"
-                                    class="btn btn-primary mt-auto">
-                                    {{ ('Ver Oferta') }}
-                                </a>
                             </div>
 
                             @if ($offer->end_date >= now())

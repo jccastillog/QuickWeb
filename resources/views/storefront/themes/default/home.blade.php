@@ -13,10 +13,6 @@
                     <div class="col-md-6">
                         <h4>{{ $category->name }}</h4>
                         <p>{{ $category->description }}</p>
-                        <a href="{{ route('storefront.category', ['domain' => $client->domain, 'categorySlug' => $category->slug]) }}"
-                            class="btn btn-primary">
-                            {{ __('Ver más') }}
-                        </a>
                     </div>
                     <div class="col-md-6 text-center">
                         @if ($category->image)
@@ -50,10 +46,6 @@
                             <p>{{ Str::limit($product->description, 100) }}</p>
                             <div class="mt-auto">
                                 <span class="text-primary fw-bold">${{ number_format($product->price, 2) }}</span>
-                                <a href="{{ route('storefront.product', ['domain' => $client->domain, 'productSlug' => $product->slug]) }}"
-                                    class="btn btn-outline-primary rounded-pill px-4 py-2 mt-2">
-                                    {{ __('Comprar') }}
-                                </a>
                             </div>
                         </div>
                     </div>

@@ -90,4 +90,15 @@ class Client extends Model
     {
         return $this->active ? 'Activo' : 'Inactivo';
     }
+
+    public function getUrlAttribute(): string
+    {
+        if ($this->custom_domain) {
+            return 'https://' . $this->custom_domain;
+        }
+
+        return app()->environment('local')
+            ? 'http://127.0.0.1:8000/' . $this->domain
+            : 'https://' . $this->domain . '.quickweb.com.co';
+    }
 }
