@@ -27,6 +27,17 @@ class IdentifyClient
         
         $client = Client::where('domain', $domain)->first();
 
+        \Log::info('[Middleware] Host detectado: ' . $request->getHost());
+        \Log::info('[Middleware] Dominio interpretado: ' . $domain);
+        if (!$client) {
+            \Log::warning('[Middleware] Cliente no encontrado para: ' . $domain);
+            abort(404, 'Tienda no encontrada');
+        }
+
+        \Log::info('[Middleware] Cliente encontrado: ' . $client->store_name);
+
+
+
         if (!$client) {
             abort(404, 'Tienda no encontrada');
         }

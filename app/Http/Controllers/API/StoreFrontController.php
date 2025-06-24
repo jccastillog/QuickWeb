@@ -11,8 +11,17 @@ class StoreFrontController extends Controller
 {
     public function show($domain = null)
     {
+        \Log::info('[StoreFrontController] Entrando a show()');
+
         // Obtener el cliente del middleware
         $client = request()->attributes->get('currentClient');
+
+        if ($client) {
+            \Log::info('[StoreFrontController] Mostrando cliente: ' . $client->store_name);
+        } else {
+            \Log::warning('[StoreFrontController] currentClient no definido en la solicitud');
+        }
+
 
         if (!$client) {
             abort(404, 'Tienda no encontrada');
