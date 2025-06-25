@@ -12,15 +12,31 @@ class IdentifyClient
     {
         \Log::info('[Middleware] Ejecutando IdentifyClient para: ' . $request->getHost());
         $exemptPaths = [
+            '/',
             'pageadmin',
             'clients*',
             'clients.categories.create'
         ];
 
+        $currentPath = $request->path(); // ejemplo: 'pageadmin' o '/'
+        $currentHost = $request->getHost(); // ejemplo: 'cliente1.quickweb.com.co'
+
+
         foreach ($exemptPaths as $path) {
             if ($request->is($path)) {
+                \Log::info("[Middleware] Excepción de path: {$currentPath}");
                 return $next($request);
             }
+        }
+
+        $mainDomain = 'quickweb.com.co';
+        if (
+            app()->environment('production') &&
+            ($currentHost === $mainDomain || Str::endsWith($currentHost, ".{$mainDomain}") === false)
+            && $currentPath === '/'
+        ) {
+            \Log::info("[Middleware] Acceso permitido a raíz principal de producción");
+            return $next($request);
         }
 
         $domain = $this->extractDomain($request);

@@ -191,12 +191,3 @@ if (app()->environment('production')) {
         });
     });
 }
-
-
-
-
-
-
-
-
-
