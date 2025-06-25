@@ -11,39 +11,34 @@ class IdentifyClient
     public function handle($request, Closure $next)
     {
         \Log::info('[Middleware] Ejecutando IdentifyClient para: ' . $request->getHost());
+
+        $currentPath = $request->path(); // Ej: 'pageadmin' o '/'
+        $currentHost = $request->getHost(); // Ej: 'cliente1.quickweb.com.co'
+        $mainDomain = 'quickweb.com.co';
+
+        $isMainDomain = $currentHost === $mainDomain || $currentHost === "www.{$mainDomain}";
+
+        // Excepciones permitidas solo si es el dominio principal (no subdominios)
         $exemptPaths = [
-            '/',
+            '/',              // solo permitimos "/" si es dominio principal
             'pageadmin',
             'clients*',
             'clients.categories.create'
         ];
 
-        $currentPath = $request->path(); // ejemplo: 'pageadmin' o '/'
-        $currentHost = $request->getHost(); // ejemplo: 'cliente1.quickweb.com.co'
-
-
         foreach ($exemptPaths as $path) {
-            if ($request->is($path)) {
-                \Log::info("[Middleware] Excepción de path: {$currentPath}");
+            if ($request->is($path) && $isMainDomain) {
+                \Log::info("[Middleware] Excepción permitida en dominio principal para: {$currentPath}");
                 return $next($request);
             }
         }
 
-        $mainDomain = 'quickweb.com.co';
-        if (
-            app()->environment('production') &&
-            ($currentHost === $mainDomain || Str::endsWith($currentHost, ".{$mainDomain}") === false)
-            && $currentPath === '/'
-        ) {
-            \Log::info("[Middleware] Acceso permitido a raíz principal de producción");
-            return $next($request);
-        }
-
+        // Continuar con identificación del cliente para subdominios o dominios personalizados
         $domain = $this->extractDomain($request);
         \Log::info('[Middleware] Dominio extraído: ' . $domain);
-        
+
         $client = Client::where('domain', $domain)->first();
-        
+
         // Compartir el cliente con todas las vistas
         view()->share('currentClient', $client);
 
@@ -65,15 +60,17 @@ class IdentifyClient
         $host = $request->getHost(); // Ej: "cliente1.quickweb.com.co" o "localhost"
         $base = 'quickweb.com.co';
 
-        // Modo local: usar segmento de URL
+        // Modo local: usar segmento de URL como dominio
         if (in_array($host, ['localhost', '127.0.0.1'])) {
-            return $request->segment(1) ?: config('client.default_client');
+            return $request->segment(1) ?: config('client.default_client', 'demo');
         }
 
+        // Si es un subdominio de quickweb.com.co, extraer solo el subdominio
         if (Str::endsWith($host, $base) && $host !== $base) {
             return Str::before($host, '.' . $base);
         }
 
+        // Para dominios personalizados
         return $host;
     }
 }
