@@ -38,18 +38,19 @@ class IdentifyClient
 
         $client = Client::where('domain', $domain)->first();
 
-        // Compartir el cliente con todas las vistas
-        view()->share('currentClient', $client);
-
-        // Inyectar en todas las solicitudes
-        $request->attributes->add(['currentClient' => $client]);
-
         if (!$client) {
             \Log::warning('[Middleware] Cliente no encontrado para: ' . $domain);
             abort(404, 'Tienda no encontrada');
         }
 
         \Log::info('[Middleware] Cliente encontrado: ' . $client->store_name);
+
+        // Inyectar en todas las solicitudes
+        $request->attributes->add(['currentClient' => $client]);
+        // Compartir el cliente con todas las vistas
+        view()->share('currentClient', $client);
+        // Registrar en el contenedor de servicios
+        app()->instance('currentClient', $client);
 
         return $next($request);
     }

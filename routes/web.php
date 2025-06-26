@@ -175,12 +175,36 @@ if (app()->environment('production')) {
             Route::get('/', [StoreFrontController::class, 'show'])->name('storefront.home');
 
             // Ruta para servir el CSS dinámico
-            Route::get('/css/style.css', function () {
+            /* Route::get('/css/style.css', function () {
                 $client = app('currentClient'); // ya debe estar identificado por el middleware
                 return response()
                     ->view('storefront.themes.default.style', compact('client'))
                     ->header('Content-Type', 'text/css');
-            });
+            }); */
+
+            Route::get('/css/style.css', function (Illuminate\Http\Request $request) {
+                try {
+                    // Intentar obtener el cliente de tres formas diferentes
+                    $client = $request->attributes->get('currentClient') 
+                        ?? app('currentClient', []) 
+                        ?? abort(404, 'Cliente no identificado');
+                    
+                    if (!view()->exists('storefront.themes.default.style')) {
+                        Log::error("Vista CSS no encontrada para el cliente: " . $client->domain);
+                        abort(500, "Plantilla CSS no disponible");
+                    }
+
+                    return response()
+                        ->view('storefront.themes.default.style', compact('client'))
+                        ->header('Content-Type', 'text/css')
+                        ->header('Cache-Control', 'public, max-age=86400');
+                        
+                } catch (\Exception $e) {
+                    Log::error("Error generando CSS: " . $e->getMessage());
+                    abort(500, "Error generando hoja de estilos");
+                }
+            })->middleware('identify.client');
+
         });
 
     Route::get('/', fn () => view('welcome'));
