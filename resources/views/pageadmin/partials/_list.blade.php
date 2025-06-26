@@ -22,7 +22,7 @@
                     </td>
                     <td>
                         <a href="{{ route('clients.edit', $item) }}" class="btn btn-sm btn-warning">
-                            <i class="fas fa-edit"></i>
+                            <i class="bi bi-pencil"></i>
                         </a>
                     </td>
                 </tr>

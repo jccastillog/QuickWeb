@@ -80,19 +80,27 @@ class CategoryController extends Controller
 
     public function destroy(Client $client, Category $category)
     {
+        \Log::info('Attempting to delete category: '.$category->id);
         try {
             if ($category->image) {
                 $this->deleteMedia($category->image->media);
                 $category->image()->delete();
             }
 
+            if ($category->products()->whereHas('offers')->exists()) {
+                return back()->with('error', 'No puedes eliminar esta categoría porque sus productos tienen ofertas activas.');
+            }
+
             $category->delete();
+            \Log::info('Categoría eliminada de la BD');
 
             return redirect()
                 ->route('clients.show', $client)
                 ->with('success', 'Categoría eliminada exitosamente');
 
         } catch (Exception $e) {
+            \Log::error('Fallo al eliminar categoría: ' . $e->getMessage());
+
             return back()
                 ->with('error', 'Error al eliminar la categoría: '.$e->getMessage());
         }

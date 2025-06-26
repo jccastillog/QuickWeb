@@ -169,25 +169,34 @@ Route::get('/test/store/{domain?}', function ($domain = 'tienda1.test') {
 
 if (app()->environment('production')) {
 
-        \Log::info('[Routes] Cargando rutas para producción', ['environment' => app()->environment()]);
-    // rutas para subdominios
-        Route::domain('{client}.quickweb.com.co')
-            ->middleware(['web', 'identify.client'])
-            ->group(function () {
-                Route::get('/', [StoreFrontController::class, 'show'])->name('storefront.home');
-            });
-
-        Route::get('/', function () {
-            return view('welcome'); // o redirige a un cliente por defecto si prefieres
-        });
-} else {
-    Route::group(['middleware' => 'web'], function() {
-        Route::group(['prefix' => '{domain}'], function() {
+    Route::domain('{client}.quickweb.com.co')
+        ->middleware(['web', 'identify.client'])
+        ->group(function () {
             Route::get('/', [StoreFrontController::class, 'show'])->name('storefront.home');
+
+            // Ruta para servir el CSS dinámico
+            Route::get('/css/style.css', function () {
+                $client = app('currentClient'); // ya debe estar identificado por el middleware
+                return response()
+                    ->view('storefront.themes.default.style', compact('client'))
+                    ->header('Content-Type', 'text/css');
+            });
         });
-        // Rutas directas (para producción)
-        Route::get('/', function() {
-            return view('welcome');
+
+    Route::get('/', fn () => view('welcome'));
+} else {
+    Route::group(['middleware' => 'web'], function () {
+        Route::group(['prefix' => '{domain}'], function () {
+            Route::get('/', [StoreFrontController::class, 'show'])->name('storefront.home');
+
+            Route::get('/css/style.css', function ($domain) {
+                $client = \App\Models\Client::where('domain', $domain)->firstOrFail();
+                return response()
+                    ->view('storefront.themes.default.style', compact('client'))
+                    ->header('Content-Type', 'text/css');
+            });
         });
+
+        Route::get('/', fn () => view('welcome'));
     });
 }

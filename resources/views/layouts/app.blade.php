@@ -11,8 +11,11 @@
     </main>
     
     @include('layouts.footer')
+    @include('storefront.themes.default.partials.infomodal')
     @include('layouts.scripts')
     
     @yield('custom-scripts')
+
+    @stack('scripts')
 </body>
 </html>

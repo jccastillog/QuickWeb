@@ -57,11 +57,7 @@
                                                         <td class="text-center">
                                                             <a href="{{ route('offers.edit', [$client, $offer]) }}"
                                                                 class="btn btn-sm btn-warning" title="Editar">
-                                                                <i class="fas fa-edit"></i>
-                                                            </a>
-                                                            <a href="{{ route('clients.show', [$client, $offer]) }}"
-                                                                class="btn btn-sm btn-info" title="Ver">
-                                                                <i class="fas fa-eye"></i>
+                                                                <i class="bi bi-pencil"></i>
                                                             </a>
                                                         </td>
                                                     </tr>

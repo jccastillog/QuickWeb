@@ -351,5 +351,12 @@
             }, 100);
         });
         </script>
+        <script>
+            function confirmDelete() {
+                if (confirm('¿Estás seguro de que deseas eliminar esta categoría? Esta acción no se puede deshacer.')) {
+                    document.getElementById('delete-form').submit();
+                }
+            }
+            </script>
         @endpush
 @endsection

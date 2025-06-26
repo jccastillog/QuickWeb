@@ -35,10 +35,10 @@
                                             </td>
                                             <td>
                                                 <a href="{{ route('clients.edit', $item) }}" class="btn btn-sm btn-warning">
-                                                    <i class="fas fa-edit"></i>
+                                                    <i class="bi bi-pencil"></i>
                                                 </a>
                                                 <a href="{{ route('clients.show', $item) }}" class="btn btn-sm btn-info">
-                                                    <i class="fas fa-eye"></i>
+                                                    <i class="bi bi-eye"></i>
                                                 </a>
                                             </td>
                                         </tr>

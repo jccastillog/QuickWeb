@@ -14,7 +14,7 @@ class IdentifyClient
 
         $currentPath = $request->path(); // Ej: 'pageadmin' o '/'
         $currentHost = $request->getHost(); // Ej: 'cliente1.quickweb.com.co'
-        $mainDomain = 'quickweb.com.co';
+        if (app()->environment('local') ? $mainDomain = '127.0.0.1' : $mainDomain = 'quickweb.com.co');
 
         $isMainDomain = $currentHost === $mainDomain || $currentHost === "www.{$mainDomain}";
 
@@ -35,7 +35,6 @@ class IdentifyClient
 
         // Continuar con identificación del cliente para subdominios o dominios personalizados
         $domain = $this->extractDomain($request);
-        \Log::info('[Middleware] Dominio extraído: ' . $domain);
 
         $client = Client::where('domain', $domain)->first();
 

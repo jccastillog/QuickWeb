@@ -10,54 +10,18 @@
         <div class="container">
             <div class="row">
                 <!-- Acerca de Nosotros -->
-                <div class="col-md-3">
-                    <div class="text-center mb-4">
-                        <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#infoModal"
-                            data-title="Manos de Lotto" data-content="#contenidoMarca">
-                            Acerca de Nosotros
-                        </button>
-                    </div>
-                </div>
+                @include('storefront.themes.default.partials.about')
 
                 <!-- Contacto -->
-                <div class="col-md-3">
-                    <h5 class="fw-bold">Contacto</h5>
-                    <p><i class="bi bi-envelope"></i> {{ $client->siteSettings->email }}</p>
-                    <p><i class="bi bi-phone"></i> {{ $client->siteSettings->phone }}</p>
-                    <p><i class="bi bi-geo-alt"></i>{{ $client->siteSettings->street_address }} - {{ $client->siteSettings->city }}</p>
-                </div>
+                @include('storefront.themes.default.partials.contact')
 
                 <!-- Políticas y Términos -->
-                <div class="col-md-3">
-                    <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#infoModal"
-                        data-title="Políticas y Términos Legales" data-content="#contenidoLegal">
-                        Términos legales
-                    </button>
-                    <ul class="list-unstyled">
-                        <li>
-                            <a href="#" class="text-white text-decoration-none">Política de Privacidad</a>
-                        </li>
-                        <li>
-                            <a href="#" class="text-white text-decoration-none">Términos y Condiciones</a>
-                        </li>
-                        <li>
-                            <a href="#" class="text-white text-decoration-none">Política de Devoluciones</a>
-                        </li>
-                    </ul>
-                </div>
+
+                @include('storefront.themes.default.partials.legal')
 
                 <!-- Redes Sociales -->
-                <div class="col-md-3 text-center">
-                    <h5 class="fw-bold">Síguenos</h5>
-                    <div class="social-icons">
-                        @foreach($client->socialNetworks as $network)
-                            <a href="{{ $network->url }}" target="_blank">
-                                <i class="bi bi-{{ $network->platform }}"></i>
-                            </a>
-                        @endforeach
-                    </div>
-                </div>
-            </div>
+                @include('storefront.themes.default.partials.social')
+
 
             <div class="row mt-4">
                 <div class="col-md-6 mx-auto">

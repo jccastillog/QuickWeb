@@ -12,7 +12,7 @@
                         </a>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('clients.categories.update', [$client, $category]) }}" method="POST"
+                        <form action="{{ route('categories.update', [$client, $category]) }}" method="POST"
                             enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
@@ -92,7 +92,7 @@
                             </div>
                         </form>
 
-                        <form id="delete-form" action="{{ route('clients.categories.destroy', [$client, $category]) }}"
+                        <form id="delete-form" action="{{ route('categories.destroy', [$client, $category]) }}"
                             method="POST" class="d-none">
                             @csrf
                             @method('DELETE')
@@ -103,24 +103,14 @@
         </div>
     </div>
 
-    @push('scripts')
-        <script>
-            function confirmDelete() {
-                Swal.fire({
-                    title: '¿Eliminar categoría?',
-                    text: "¡No podrás revertir esto!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Sí, eliminar',
-                    cancelButtonText: 'Cancelar'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        document.getElementById('delete-form').submit();
-                    }
-                })
+@push('scripts')
+    <script>
+        function confirmDelete() {
+            if (confirm('¿Estás seguro de que deseas eliminar esta categoría? Esta acción no se puede deshacer.')) {
+                document.getElementById('delete-form').submit();
             }
-        </script>
-    @endpush
+        }
+    </script>
+@endpush
+
 @endsection

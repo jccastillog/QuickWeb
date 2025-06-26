@@ -9,7 +9,8 @@
     <link rel="stylesheet" href="https://{{ $currentClient->domain }}/css/style.css">
 @else
     <!-- Usar recursos centralizados -->
-    <link rel="stylesheet" href="{{ asset('css/clients/'.$currentClient->id.'.css') }}">
+    <link rel="stylesheet" href="/{{ request()->route('domain') }}/css/style.css">
+
 @endif
 
 @if($client->favicon)

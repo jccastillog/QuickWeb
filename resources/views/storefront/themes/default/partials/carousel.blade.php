@@ -1,4 +1,4 @@
-<div id="clientCarousel" class="carousel slide" data-bs-ride="carousel">
+<div id="clientCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
     @if ($allImages && $allImages->count() > 0)
         <!-- Indicadores -->
         <div class="carousel-indicators">
@@ -7,17 +7,16 @@
                     class="{{ $loop->first ? 'active' : '' }}"></button>
             @endforeach
         </div>
-
         <!-- Imágenes -->
         <div class="carousel-inner">
             @foreach ($allImages as $key => $media)
-                <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
-                    <img src="{{ $media->full_url }}" class="d-block w-100" style="height: 500px; object-fit: cover;"
-                        alt="Imagen {{ $key + 1 }}">
+            <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
+                <div class="ratio ratio-21x9" style="max-height: 320px; overflow: hidden;">
+                    <img src="{{ $media->full_url }}" class="img-fluid object-fit-cover w-100 h-100" alt="...">
                 </div>
+            </div>
             @endforeach
         </div>
-
         <!-- Controles -->
         <button class="carousel-control-prev" type="button" data-bs-target="#clientCarousel" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
