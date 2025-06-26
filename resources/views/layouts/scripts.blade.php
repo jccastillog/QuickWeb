@@ -6,11 +6,22 @@
         infoModal.addEventListener('show.bs.modal', event => {
             const button = event.relatedTarget;
             const title = button.getAttribute('data-title');
-            const content = button.getAttribute('data-content');
+            let content = button.getAttribute('data-content');
 
-            console.log('Título:', title);
-            console.log('Contenido:', content);
+            // Intenta decodificar correctamente si viene como string JSON escapado
+            try {
+                content = JSON.parse(content); // convierte \u00e1 → á y \n → saltos reales
+            } catch (_) {
+                // fallback: lo deja como viene si falla parseo
+            }
 
+            // Separar por dobles saltos y envolver en párrafos
+            content = content
+                .split(/\n{2,}/)
+                .map(p => p.trim())
+                .filter(p => p.length > 0)
+                .map(p => `<p>${p}</p>`)
+                .join('');
 
             document.getElementById('infoModalTitle').textContent = title;
             document.getElementById('infoModalBody').innerHTML = content;
