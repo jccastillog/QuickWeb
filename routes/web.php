@@ -175,13 +175,6 @@ if (app()->environment('production')) {
             Route::get('/', [StoreFrontController::class, 'show'])->name('storefront.home');
 
             // Ruta para servir el CSS dinámico
-            /* Route::get('/css/style.css', function () {
-                $client = app('currentClient'); // ya debe estar identificado por el middleware
-                return response()
-                    ->view('storefront.themes.default.style', compact('client'))
-                    ->header('Content-Type', 'text/css');
-            }); */
-
             Route::get('/css/style.css', function (Illuminate\Http\Request $request) {
                 try {
                     // Intentar obtener el cliente de tres formas diferentes

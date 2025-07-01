@@ -28,6 +28,7 @@
                 @method('PUT')
                 @include('pageadmin.sitesettings.partials.form')
                 <button type="submit" class="btn btn-primary">Actualizar Configuración</button>
+                <a href="{{ route('clients.show', $client) }}" class="btn btn-secondary">Cancelar</a>
             </form>
         </div>
     </div>

@@ -8,6 +8,7 @@
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" />
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -232,13 +233,13 @@
                     <div class="qw-card p-4">
                         <h3 class="text-center mb-4">Básico</h3>
                         <div class="text-center mb-4">
-                            <span class="display-4 fw-bold">$499</span>
+                            <span class="display-4 fw-bold">$25.000 Mes</span>
                             <span class="text-muted">/mes</span>
                         </div>
                         <ul class="qw-feature-list">
-                            <li>Diseño web personalizado (1-5 páginas)</li>
+                            <li>Diseño web personalizado</li>
                             <li>Panel de administración básico</li>
-                            <li>Dominio .com.co (1er año)</li>
+                            <li>Subdominios quickweb.com.co</li>
                             <li>Hosting compartido</li>
                             <li>Certificado SSL</li>
                             <li>Soporte técnico básico</li>
@@ -254,12 +255,12 @@
                         <span class="position-absolute top-0 start-50 translate-middle badge bg-success">Popular</span>
                         <h3 class="text-center mb-4">Estándar</h3>
                         <div class="text-center mb-4">
-                            <span class="display-4 fw-bold">$799</span>
+                            <span class="display-4 fw-bold">$50.000 Mes</span>
                             <span class="text-muted">/mes</span>
                         </div>
                         <ul class="qw-feature-list">
                             <li>Todo en Básico +</li>
-                            <li>Hasta 10 páginas</li>
+                            <li>Dominio .com.co (1er año)</li>
                             <li>Panel de administración avanzado</li>
                             <li>Integración con redes sociales</li>
                             <li>Formulario de contacto</li>
@@ -275,7 +276,7 @@
                     <div class="qw-card p-4">
                         <h3 class="text-center mb-4">Premium</h3>
                         <div class="text-center mb-4">
-                            <span class="display-4 fw-bold">$1,199</span>
+                            <span class="display-4 fw-bold">$150.000 Mes</span>
                             <span class="text-muted">/mes</span>
                         </div>
                         <ul class="qw-feature-list">
@@ -374,7 +375,7 @@
                             <div class="p-4 bg-white text-dark rounded-3 h-100">
                                 <i class="fas fa-phone qw-card-icon"></i>
                                 <h4>Teléfono</h4>
-                                <p>+57 123 456 7890</p>
+                                <p>+57 3213086428</p>
                             </div>
                         </div>
                         
@@ -434,6 +435,13 @@
                 </div>
             </div>
         </div>
+
+        <a href="https://wa.me/573213086428" target="_blank"
+            id="whatsappButton"
+            class="btn btn-success rounded-circle position-fixed"
+            style="width:60px; height:60px; bottom:30px; left:30px; z-index:1000;">
+            <i class="bi bi-whatsapp fs-4"></i>
+        </a>
     </footer>
 
     <!-- Bootstrap JS -->
