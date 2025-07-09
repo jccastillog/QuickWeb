@@ -86,8 +86,6 @@ class ClientController extends Controller
                 );
             }
 
-            $client->siteSettings()->create($request->all());
-
             return redirect()
                 ->route('clients.index')
                 ->with('success', 'Tienda creada exitosamente');
