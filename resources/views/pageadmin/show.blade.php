@@ -12,14 +12,16 @@
                         {{ $client->store_name }}
                     </a>
                 </h1>
-                <div>
-                    <a href="{{ route('clients.edit', $client) }}" class="btn btn-warning">
-                        <i class="bi bi-pencil-square"></i> Editar
-                    </a>
-                    <a href="{{ route('clients.index') }}" class="btn btn-secondary">
-                        <i class="bi bi-arrow-left"></i> Volver
-                    </a>
-                </div>
+                @if (auth()->user()->role === 'admin')
+                    <div>
+                        <a href="{{ route('clients.edit', $client) }}" class="btn btn-warning">
+                            <i class="bi bi-pencil-square"></i> Editar
+                        </a>
+                        <a href="{{ route('clients.index') }}" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i> Volver
+                        </a>
+                    </div>
+                @endif
             </div>
         </div>
     </div>

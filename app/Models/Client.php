@@ -37,6 +37,11 @@ class Client extends Model
         return $this->hasOne(SiteSettings::class);
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function socialNetworks()
     {
         return $this->hasMany(SocialNetwork::class);

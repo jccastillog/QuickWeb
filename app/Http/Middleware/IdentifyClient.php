@@ -23,7 +23,12 @@ class IdentifyClient
             '/',              // solo permitimos "/" si es dominio principal
             'pageadmin',
             'clients*',
-            'clients.categories.create'
+            'clients.categories.create',
+            'login',
+            'user/password',
+            'logout',
+            'forgot-password',
+            'reset-password*' 
         ];
 
         foreach ($exemptPaths as $path) {

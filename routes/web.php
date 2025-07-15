@@ -12,6 +12,8 @@ use App\Http\Controllers\SocialNetworkController;
 use App\Http\Controllers\TestimonialController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\OfferController;
+use App\Http\Controllers\UserController;
+
 
 
 /*
@@ -81,92 +83,165 @@ Route::get('/test-multi-domain/{clientId}', function ($clientId) {
     ]);
 });
 
+Route::get('/test/store/{domain?}', function ($domain = 'tienda1.test') {
+    return view('test.store', ['domain' => $domain]);
+});
+
+// Rutas de autenticación
+Route::get('/user/password', function () {
+    return view('auth.passwords.update');
+})->middleware('auth')->name('password.edit');
+
+Route::get('clients/{client}/users/create', [UserController::class, 'create'])->name('clients.users.create');
+Route::post('clients/{client}/users', [UserController::class, 'store'])->name('clients.users.store');
+
 
 Route::get('/pageadmin', function () {
     return view('welcome');
 })->name('welcome');
 
 // Rutas para el administrador de tiendas (Clients)
-Route::resource('clients', ClientController::class)->only([
-    'index',
-    'show',
-    'store',
-    'update',
-    'destroy'
-]);
+Route::middleware(['auth', 'role:admin'])->group(function () {
 
-Route::get('clients/{client}/edit', [ClientController::class, 'edit'])
-    ->name('clients.edit');
+    Route::resource('clients', ClientController::class)->only(['index', 'show','store','update','destroy']);
 
-Route::get('clients/{client}/site-settings/create', [SiteSettingsController::class, 'create'])
-    ->name('site-settings.create');
+    Route::get('clients/{client}/edit', [ClientController::class, 'edit'])
+        ->name('clients.edit');
 
-Route::post('clients/{client}/site-settings', [SiteSettingsController::class, 'store'])
-    ->name('site-settings.store');
+    Route::get('clients/{client}/site-settings/create', [SiteSettingsController::class, 'create'])
+        ->name('site-settings.create');
 
-Route::get('clients/{client}/site-settings/edit', [SiteSettingsController::class, 'edit'])
-    ->name('site-settings.edit');
+    Route::post('clients/{client}/site-settings', [SiteSettingsController::class, 'store'])
+        ->name('site-settings.store');
 
-Route::put('clients/{client}/site-settings', [SiteSettingsController::class, 'update'])
-    ->name('site-settings.update');
+    Route::get('clients/{client}/site-settings/edit', [SiteSettingsController::class, 'edit'])
+        ->name('site-settings.edit');
 
-Route::prefix('clients/{client}/social-networks')->group(function () {
-    Route::get('/create', [SocialNetworkController::class, 'create'])->name('social-networks.create');
-    Route::post('/', [SocialNetworkController::class, 'store'])->name('social-networks.store');
-    Route::get('/{socialNetwork}/edit', [SocialNetworkController::class, 'edit'])->name('social-networks.edit');
-    Route::put('/{socialNetwork}', [SocialNetworkController::class, 'update'])->name('social-networks.update');
-    Route::delete('/{socialNetwork}', [SocialNetworkController::class, 'destroy'])->name('social-networks.destroy');
+    Route::put('clients/{client}/site-settings', [SiteSettingsController::class, 'update'])
+        ->name('site-settings.update');
+
+    Route::prefix('clients/{client}/social-networks')->group(function () {
+        Route::get('/create', [SocialNetworkController::class, 'create'])->name('social-networks.create');
+        Route::post('/', [SocialNetworkController::class, 'store'])->name('social-networks.store');
+        Route::get('/{socialNetwork}/edit', [SocialNetworkController::class, 'edit'])->name('social-networks.edit');
+        Route::put('/{socialNetwork}', [SocialNetworkController::class, 'update'])->name('social-networks.update');
+        Route::delete('/{socialNetwork}', [SocialNetworkController::class, 'destroy'])->name('social-networks.destroy');
+    });
+
+    Route::prefix('clients/{client}/testimonials')->group(function () {
+        Route::get('/create', [TestimonialController::class, 'create'])->name('testimonials.create');
+        Route::post('/', [TestimonialController::class, 'store'])->name('testimonials.store');
+        Route::get('/{testimonial}/edit', [TestimonialController::class, 'edit'])->name('testimonials.edit');
+        Route::put('/{testimonial}', [TestimonialController::class, 'update'])->name('testimonials.update');
+        Route::delete('/{testimonial}', [TestimonialController::class, 'destroy'])->name('testimonials.destroy');
+    });
+
+    Route::prefix('clients/{client}/pages')->group(function () {
+        Route::get('/create', [PageController::class, 'create'])->name('pages.create');
+        Route::post('/', [PageController::class, 'store'])->name('pages.store');
+        Route::get('/{page}/edit', [PageController::class, 'edit'])->name('pages.edit');
+        Route::put('/{page}', [PageController::class, 'update'])->name('pages.update');
+        Route::delete('/{page}', [PageController::class, 'destroy'])->name('pages.destroy');
+    });
+
+    Route::prefix('clients/{client}/categories')->group(function () {
+        Route::get('/create', [CategoryController::class, 'create'])->name('categories.create');
+        Route::post('/', [CategoryController::class, 'store'])->name('categories.store');
+        Route::get('/{category}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
+        Route::put('/{category}', [CategoryController::class, 'update'])->name('categories.update');
+        Route::delete('/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+    });
+
+
+    Route::prefix('clients/{client}/products')->group(function () {
+        Route::get('/', [ProductController::class, 'index'])->name('products.index');
+        Route::get('/create', [ProductController::class, 'create'])->name('products.create');
+        Route::post('/', [ProductController::class, 'store'])->name('products.store');
+        Route::get('/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
+        Route::put('/{product}', [ProductController::class, 'update'])->name('products.update');
+        Route::delete('/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+    });
+
+    Route::prefix('clients/{client}/offers')->group(function () {
+        Route::get('/create', [OfferController::class, 'create'])->name('offers.create');
+        Route::post('/', [OfferController::class, 'store'])->name('offers.store');
+        Route::get('/{offer}/edit', [OfferController::class, 'edit'])->name('offers.edit');
+        Route::put('/{offer}', [OfferController::class, 'update'])->name('offers.update');
+        Route::delete('/{offer}', [OfferController::class, 'destroy'])->name('offers.destroy');
+    });
 });
 
-Route::prefix('clients/{client}/testimonials')->group(function () {
-    Route::get('/create', [TestimonialController::class, 'create'])->name('testimonials.create');
-    Route::post('/', [TestimonialController::class, 'store'])->name('testimonials.store');
-    Route::get('/{testimonial}/edit', [TestimonialController::class, 'edit'])->name('testimonials.edit');
-    Route::put('/{testimonial}', [TestimonialController::class, 'update'])->name('testimonials.update');
-    Route::delete('/{testimonial}', [TestimonialController::class, 'destroy'])->name('testimonials.destroy');
-});
+// Rutas para users de tiendas (Clients)
+Route::middleware(['auth'])->group(function () {
 
-Route::prefix('clients/{client}/pages')->group(function () {
-    Route::get('/create', [PageController::class, 'create'])->name('pages.create');
-    Route::post('/', [PageController::class, 'store'])->name('pages.store');
-    Route::get('/{page}/edit', [PageController::class, 'edit'])->name('pages.edit');
-    Route::put('/{page}', [PageController::class, 'update'])->name('pages.update');
-    Route::delete('/{page}', [PageController::class, 'destroy'])->name('pages.destroy');
-});
-
-Route::prefix('clients/{client}/categories')->group(function () {
-    Route::get('/create', [CategoryController::class, 'create'])->name('categories.create');
-    Route::post('/', [CategoryController::class, 'store'])->name('categories.store');
-    Route::get('/{category}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
-    Route::put('/{category}', [CategoryController::class, 'update'])->name('categories.update');
-    Route::delete('/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
-});
+    Route::get('clients/{client}', [ClientController::class, 'show'])->name('clients.show');
 
 
-Route::prefix('clients/{client}/products')->group(function () {
-    Route::get('/', [ProductController::class, 'index'])->name('products.index');
-    Route::get('/create', [ProductController::class, 'create'])->name('products.create');
-    Route::post('/', [ProductController::class, 'store'])->name('products.store');
-    Route::get('/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
-    Route::put('/{product}', [ProductController::class, 'update'])->name('products.update');
-    Route::delete('/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
-});
 
-Route::prefix('clients/{client}/offers')->group(function () {
-    Route::get('/create', [OfferController::class, 'create'])->name('offers.create');
-    Route::post('/', [OfferController::class, 'store'])->name('offers.store');
-    Route::get('/{offer}/edit', [OfferController::class, 'edit'])->name('offers.edit');
-    Route::put('/{offer}', [OfferController::class, 'update'])->name('offers.update');
-    Route::delete('/{offer}', [OfferController::class, 'destroy'])->name('offers.destroy');
+    Route::get('clients/{client}/site-settings/create', [SiteSettingsController::class, 'create'])
+        ->name('site-settings.create');
+
+    Route::post('clients/{client}/site-settings', [SiteSettingsController::class, 'store'])
+        ->name('site-settings.store');
+
+    Route::get('clients/{client}/site-settings/edit', [SiteSettingsController::class, 'edit'])
+        ->name('site-settings.edit');
+
+    Route::put('clients/{client}/site-settings', [SiteSettingsController::class, 'update'])
+        ->name('site-settings.update');
+
+    Route::prefix('clients/{client}/social-networks')->group(function () {
+        Route::get('/create', [SocialNetworkController::class, 'create'])->name('social-networks.create');
+        Route::post('/', [SocialNetworkController::class, 'store'])->name('social-networks.store');
+        Route::get('/{socialNetwork}/edit', [SocialNetworkController::class, 'edit'])->name('social-networks.edit');
+        Route::put('/{socialNetwork}', [SocialNetworkController::class, 'update'])->name('social-networks.update');
+        Route::delete('/{socialNetwork}', [SocialNetworkController::class, 'destroy'])->name('social-networks.destroy');
+    });
+
+    Route::prefix('clients/{client}/testimonials')->group(function () {
+        Route::get('/create', [TestimonialController::class, 'create'])->name('testimonials.create');
+        Route::post('/', [TestimonialController::class, 'store'])->name('testimonials.store');
+        Route::get('/{testimonial}/edit', [TestimonialController::class, 'edit'])->name('testimonials.edit');
+        Route::put('/{testimonial}', [TestimonialController::class, 'update'])->name('testimonials.update');
+        Route::delete('/{testimonial}', [TestimonialController::class, 'destroy'])->name('testimonials.destroy');
+    });
+
+    Route::prefix('clients/{client}/pages')->group(function () {
+        Route::get('/create', [PageController::class, 'create'])->name('pages.create');
+        Route::post('/', [PageController::class, 'store'])->name('pages.store');
+        Route::get('/{page}/edit', [PageController::class, 'edit'])->name('pages.edit');
+        Route::put('/{page}', [PageController::class, 'update'])->name('pages.update');
+        Route::delete('/{page}', [PageController::class, 'destroy'])->name('pages.destroy');
+    });
+
+    Route::prefix('clients/{client}/categories')->group(function () {
+        Route::get('/create', [CategoryController::class, 'create'])->name('categories.create');
+        Route::post('/', [CategoryController::class, 'store'])->name('categories.store');
+        Route::get('/{category}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
+        Route::put('/{category}', [CategoryController::class, 'update'])->name('categories.update');
+        Route::delete('/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+    });
+
+
+    Route::prefix('clients/{client}/products')->group(function () {
+        Route::get('/', [ProductController::class, 'index'])->name('products.index');
+        Route::get('/create', [ProductController::class, 'create'])->name('products.create');
+        Route::post('/', [ProductController::class, 'store'])->name('products.store');
+        Route::get('/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
+        Route::put('/{product}', [ProductController::class, 'update'])->name('products.update');
+        Route::delete('/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+    });
+
+    Route::prefix('clients/{client}/offers')->group(function () {
+        Route::get('/create', [OfferController::class, 'create'])->name('offers.create');
+        Route::post('/', [OfferController::class, 'store'])->name('offers.store');
+        Route::get('/{offer}/edit', [OfferController::class, 'edit'])->name('offers.edit');
+        Route::put('/{offer}', [OfferController::class, 'update'])->name('offers.update');
+        Route::delete('/{offer}', [OfferController::class, 'destroy'])->name('offers.destroy');
+    });
 });
 
 // routes/web.php
-
-Route::get('/test/store/{domain?}', function ($domain = 'tienda1.test') {
-    return view('test.store', ['domain' => $domain]);
-});
-
-
 if (app()->environment('production')) {
 
     Route::domain('{client}.quickweb.com.co')

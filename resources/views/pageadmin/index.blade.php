@@ -7,7 +7,7 @@
             <div class="col-md-5">
                 <div class="card shadow mb-4">
                     <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                        <h6 class="m-0 font-weight-bold text-primary">Clientes Quickweb</h6>
+                        <h3 class="m-0 font-weight-bold text-primary">Clientes Quickweb</h3>
                         <button class="btn btn-sm btn-primary" onclick="resetForm()">
                             <i class="fas fa-plus"></i> Nueva Tienda
                         </button>
@@ -61,11 +61,18 @@
             <!-- Formulario -->
             <div class="col-md-7">
                 <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">
-                            {{ $client->exists ? 'Editar' : 'Crear' }} Tienda
-                        </h6>
+                    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                        <h3 class="m-0 font-weight-bold text-primary">
+                            {{ $client->exists ? 'Editar' : 'Crear' }} Tienda {{ $client->store_name ?: '' }}
+                        </h3>
+                        @if ($client->exists )
+                            <a href="{{ route('clients.users.create', $client) }}"
+                            class="btn btn-success shadow-sm">
+                                <i class="bi bi-person-plus-fill me-1"></i> Crear Usuario
+                            </a>
+                        @endif
                     </div>
+                    
                     <div class="card-body">
                         <form id="client-form"
                             action="{{ $client->exists ? route('clients.update', $client) : route('clients.store') }}"

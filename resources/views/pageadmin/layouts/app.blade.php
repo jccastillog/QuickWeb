@@ -54,9 +54,12 @@
                         <i class="bi bi-list"></i>
                     </button>
                     <div class="ms-auto">
-                        <span class="badge bg-warning text-dark">
-                            <i class="bi bi-exclamation-triangle-fill"></i> Sin Autenticación
-                        </span>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                                <i class="bi bi-box-arrow-right"></i> Salir
+                            </button>
+                        </form>
                     </div>
                 </div>
             </nav>
