@@ -13,6 +13,7 @@ use App\Http\Controllers\TestimonialController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\OfferController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\NewsletterController;
 
 
 
@@ -176,8 +177,6 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('clients/{client}', [ClientController::class, 'show'])->name('clients.show');
 
-
-
     Route::get('clients/{client}/site-settings/create', [SiteSettingsController::class, 'create'])
         ->name('site-settings.create');
 
@@ -273,6 +272,8 @@ if (app()->environment('production')) {
                 }
             })->middleware('identify.client');
 
+            Route::post('newsletter', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
+
         });
 
     Route::get('/', fn () => view('welcome'));
@@ -287,6 +288,8 @@ if (app()->environment('production')) {
                     ->view('storefront.themes.default.style', compact('client'))
                     ->header('Content-Type', 'text/css');
             });
+
+            Route::post('newsletter', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
         });
 
         Route::get('/', fn () => view('welcome'));

@@ -25,12 +25,18 @@
 
             <div class="row mt-4">
                 <div class="col-md-6 mx-auto">
-                    <h5 class="text-center mb-3">Suscríbete a nuestro newsletter</h5>
-                    <form id="newsletterForm" class="d-flex">
-                        <input type="email" class="form-control" placeholder="Tu correo electrónico" required>
+                    <h5 class="text-center mb-3 text-primary">Recibe nuestro catalogo actual</h5>
+                    @php
+                        $action = app()->environment('production')
+                            ? route('newsletter.subscribe')
+                            : route('newsletter.subscribe', ['domain' => $client->domain]);
+                    @endphp
+                    <form id="newsletterForm" method="POST" action="{{ $action }}" class="d-flex">
+                        @csrf
+                        <input type="email" name="email" class="form-control" placeholder="Tu correo electrónico" required>
                         <button type="submit" class="btn btn-primary ms-2">Suscribirse</button>
                     </form>
-                    <div id="newsletterMessage" class="text-center mt-2 small"></div>
+                    <div id="newsletterMessage" class="text-center mt-2 small" style="display:none;"></div>
                 </div>
             </div>
 

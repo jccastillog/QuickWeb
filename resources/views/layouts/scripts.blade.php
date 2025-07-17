@@ -28,3 +28,35 @@
         });
     }
 </script>
+
+<script>
+document.getElementById('newsletterForm').addEventListener('submit', function(e) {
+    e.preventDefault(); // evita la recarga
+
+    const form = e.target;
+    const formData = new FormData(form);
+
+    fetch(form.action, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+        },
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById('newsletterMessage').innerText = data.message;
+        document.getElementById('newsletterMessage').classList.remove('text-danger');
+        document.getElementById('newsletterMessage').classList.add('text-success');
+        document.getElementById('newsletterMessage').style.display = 'block';
+        form.reset();
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        document.getElementById('newsletterMessage').innerText = 'Ocurrió un error al enviar el catálogo.';
+        document.getElementById('newsletterMessage').classList.remove('text-success');
+        document.getElementById('newsletterMessage').classList.add('text-danger');
+        document.getElementById('newsletterMessage').style.display = 'block';
+    });
+});
+</script>
