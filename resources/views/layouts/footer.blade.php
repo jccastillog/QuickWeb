@@ -23,22 +23,23 @@
                 @include('storefront.themes.default.partials.social')
 
 
-            <div class="row mt-4">
                 <div class="col-md-6 mx-auto">
-                    <h5 class="text-center mb-3 text-primary">Recibe nuestro catalogo actual</h5>
+                    <h5 class="text-center mb-3 text-primary">Recibe nuestro catálogo actual</h5>
+
                     @php
-                        $action = app()->environment('production')
+                        $action = Route::has('newsletter.subscribe')
                             ? route('newsletter.subscribe')
-                            : route('newsletter.subscribe', ['domain' => $client->domain]);
+                            : route('newsletter.subscribe.fallback', ['domain' => $client->domain]);
                     @endphp
+
                     <form id="newsletterForm" method="POST" action="{{ $action }}" class="d-flex">
                         @csrf
                         <input type="email" name="email" class="form-control" placeholder="Tu correo electrónico" required>
                         <button type="submit" class="btn btn-primary ms-2">Suscribirse</button>
                     </form>
+
                     <div id="newsletterMessage" class="text-center mt-2 small" style="display:none;"></div>
                 </div>
-            </div>
 
             <!-- Fila de Copyright -->
             <div class="row mt-3 border-top pt-3 text-center">

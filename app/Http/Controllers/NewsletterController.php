@@ -23,4 +23,15 @@ class NewsletterController extends Controller
 
         return response()->json(['message' => 'Catálogo enviado']);
     }
+
+    public function subscribeViaDomain(Request $request, $domain)
+    {
+        $client = Client::where('domain', $domain)->with('siteSettings')->firstOrFail();
+
+        $request->validate(['email' => 'required|email']);
+
+        Mail::to($request->email)->send(new ClientCatalogMail($client));
+
+        return response()->json(['message' => 'Catálogo enviado vía fallback']);
+    }
 }

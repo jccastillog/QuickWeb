@@ -17,17 +17,6 @@ use App\Http\Controllers\NewsletterController;
 
 
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
-
 // Ruta temporal de prueba - Eliminar después de las pruebas
 
 Route::get('/quick-test', function () {
@@ -295,3 +284,5 @@ if (app()->environment('production')) {
         Route::get('/', fn () => view('welcome'));
     });
 }
+
+Route::post('api/newsletter/{domain}', [NewsletterController::class, 'subscribeViaDomain'])->name('newsletter.subscribe.fallback');
