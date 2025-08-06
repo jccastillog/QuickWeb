@@ -30,33 +30,45 @@
 </script>
 
 <script>
-document.getElementById('newsletterForm').addEventListener('submit', function(e) {
-    e.preventDefault(); // evita la recarga
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('newsletterForm');
+        const message = document.getElementById('newsletterMessage');
 
-    const form = e.target;
-    const formData = new FormData(form);
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
 
-    fetch(form.action, {
-        method: 'POST',
-        headers: {
-            'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
-        },
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        document.getElementById('newsletterMessage').innerText = data.message;
-        document.getElementById('newsletterMessage').classList.remove('text-danger');
-        document.getElementById('newsletterMessage').classList.add('text-success');
-        document.getElementById('newsletterMessage').style.display = 'block';
-        form.reset();
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        document.getElementById('newsletterMessage').innerText = 'Ocurrió un error al enviar el catálogo.';
-        document.getElementById('newsletterMessage').classList.remove('text-success');
-        document.getElementById('newsletterMessage').classList.add('text-danger');
-        document.getElementById('newsletterMessage').style.display = 'block';
+            const formData = new FormData(form);
+            formData.append('_token', document.querySelector('input[name="_token"]').value);
+
+            fetch(form.action, {
+                method: 'POST',
+                body: formData
+            })
+            .then(async response => {
+                if (!response.ok) {
+                    throw new Error(`Respuesta HTTP ${response.status}`);
+                }
+
+                const contentType = response.headers.get('content-type');
+                if (contentType && contentType.includes('application/json')) {
+                    const data = await response.json();
+                    message.innerText = data.message;
+                    message.classList.remove('text-danger');
+                    message.classList.add('text-success');
+                    message.style.display = 'block';
+                    form.reset();
+                } else {
+                    throw new Error('La respuesta no fue JSON');
+                }
+            })
+            .catch(error => {
+                console.error('Error al enviar newsletter:', error);
+                message.innerText = 'Ocurrió un error técnico: ' + error.message;
+                message.classList.remove('text-success');
+                message.classList.add('text-danger');
+                message.style.display = 'block';
+            });
+        });
     });
-});
 </script>
+

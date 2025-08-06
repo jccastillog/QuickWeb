@@ -7,9 +7,9 @@
                 <div class="card shadow mb-4">
                     <div class="card-header py-3 d-flex justify-content-between align-items-center bg-primary text-white">
                         <h6 class="m-0 font-weight-bold">Nuevo Producto para {{ $client->store_name }}</h6>
-                        <a href="{{ route('products.index', $client) }}" class="btn btn-light btn-sm">
+                        <a href="{{ route('clients.show', $client) }}" class="btn btn-light btn-sm">
                             <i class="fas fa-arrow-left mr-1"></i> Volver
-                        </a>F
+                        </a>
                     </div>
                     <div class="card-body">
                         <form action="{{ route('products.store', $client) }}" method="POST" enctype="multipart/form-data">

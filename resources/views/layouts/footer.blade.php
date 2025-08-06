@@ -24,18 +24,22 @@
 
 
                 <div class="col-md-6 mx-auto">
-                    <h5 class="text-center mb-3 text-primary">Recibe nuestro catálogo actual</h5>
+                    <div class="d-flex align-items-center justify-content-center mb-3 px-2 py-1 border-start border-3 border-primary">
+                        <i class="bi bi-info-circle text-primary me-2"></i>
+                        <span class="text-primary fw-semibold">Recibe nuestro catálogo actual</span>
+                    </div>
 
                     @php
-                        $action = Route::has('newsletter.subscribe')
-                            ? route('newsletter.subscribe')
+                        $action = Route::has('newsletter.subscribe') && isset($client)
+                            ? route('newsletter.subscribe', ['domain' => $client->domain])
                             : route('newsletter.subscribe.fallback', ['domain' => $client->domain]);
                     @endphp
+
 
                     <form id="newsletterForm" method="POST" action="{{ $action }}" class="d-flex">
                         @csrf
                         <input type="email" name="email" class="form-control" placeholder="Tu correo electrónico" required>
-                        <button type="submit" class="btn btn-primary ms-2">Suscribirse</button>
+                        <button type="submit" class="btn btn-primary ms-2">Recibir</button>
                     </form>
 
                     <div id="newsletterMessage" class="text-center mt-2 small" style="display:none;"></div>
