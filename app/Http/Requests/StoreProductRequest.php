@@ -17,7 +17,7 @@ class StoreProductRequest extends FormRequest
     {
         return [
             'category_id' => 'required|exists:categories,id',
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:products,name',
             'description' => 'required|string',
             'price' => 'required|numeric|min:0',
             'compare_price' => 'nullable|numeric|min:0',
@@ -33,6 +33,7 @@ class StoreProductRequest extends FormRequest
     {
         return [
             'category_id.exists' => 'La categoría seleccionada no existe',
+            'name.unique' => 'El nombre del producto ya existe',
             'price.min' => 'El precio no puede ser negativo',
             'compare_price.min' => 'El precio de comparación no puede ser negativo',
             'stock.min' => 'El stock no puede ser negativo'

@@ -1,7 +1,6 @@
     <footer id="contacto" class="bg-dark text-white py-4">
 
-        <a href="https://wa.me/{{ $client->siteSettings->whatsapp }}" target="_blank"
-            id="whatsappButton"
+        <a href="https://wa.me/{{ $client->siteSettings->whatsapp }}" target="_blank" id="whatsappButton"
             class="btn btn-success rounded-circle position-fixed"
             style="width:60px; height:60px; bottom:30px; left:30px; z-index:1000;">
             <i class="bi bi-whatsapp fs-4"></i>
@@ -24,37 +23,56 @@
 
 
                 <div class="col-md-6 mx-auto">
-                    <div class="d-flex align-items-center justify-content-center mb-3 px-2 py-1 border-start border-3 border-primary">
+                    <div
+                        class="d-flex align-items-center justify-content-center mb-3 px-2 py-1 border-start border-3 border-primary">
                         <i class="bi bi-info-circle text-primary me-2"></i>
                         <span class="text-primary fw-semibold">Recibe nuestro catálogo actual</span>
                     </div>
 
                     @php
-                        $action = Route::has('newsletter.subscribe') && isset($client)
-                            ? route('newsletter.subscribe', ['domain' => $client->domain])
-                            : route('newsletter.subscribe.fallback', ['domain' => $client->domain]);
+                        $action = '#';
+
+                        if (App::environment('production')) {
+                            // ✅ Mantiene la lógica que ya te funciona en producción
+                            if (Route::has('newsletter.subscribe') && isset($client?->domain)) {
+                                $action = route('newsletter.subscribe', ['client' => $client->domain]);
+                            } elseif (Route::has('newsletter.subscribe.fallback') && isset($client?->domain)) {
+                                $action = route('newsletter.subscribe.fallback', ['domain' => $client->domain]);
+                            }
+                        } else {
+                            // 🛠️ Ajuste para entorno local
+                            $domain = request()->route('domain') ?? $client?->domain;
+
+                            if (Route::has('newsletter.subscribe') && $domain) {
+                                $action = route('newsletter.subscribe', ['domain' => $domain]);
+                            } elseif (Route::has('newsletter.subscribe.fallback') && $domain) {
+                                $action = route('newsletter.subscribe.fallback', ['domain' => $domain]);
+                            }
+                        }
+
                     @endphp
 
 
                     <form id="newsletterForm" method="POST" action="{{ $action }}" class="d-flex">
                         @csrf
-                        <input type="email" name="email" class="form-control" placeholder="Tu correo electrónico" required>
+                        <input type="email" name="email" class="form-control" placeholder="Tu correo electrónico"
+                            required>
                         <button type="submit" class="btn btn-primary ms-2">Recibir</button>
                     </form>
 
                     <div id="newsletterMessage" class="text-center mt-2 small" style="display:none;"></div>
                 </div>
 
-            <!-- Fila de Copyright -->
-            <div class="row mt-3 border-top pt-3 text-center">
-                <div class="col-12">
-                    <p class="mb-0">
-                        &copy; 2025 QuickWeb. Todos los derechos reservados. | Diseñado
-                        por
-                        <a href="https://quickweb.com.co" class="text-white fw-bold text-decoration-none"
-                            target="_blank">QuickWeb</a>
-                    </p>
+                <!-- Fila de Copyright -->
+                <div class="row mt-3 border-top pt-3 text-center">
+                    <div class="col-12">
+                        <p class="mb-0">
+                            &copy; 2025 QuickWeb. Todos los derechos reservados. | Diseñado
+                            por
+                            <a href="https://quickweb.com.co" class="text-white fw-bold text-decoration-none"
+                                target="_blank">QuickWeb</a>
+                        </p>
+                    </div>
                 </div>
             </div>
-        </div>
     </footer>

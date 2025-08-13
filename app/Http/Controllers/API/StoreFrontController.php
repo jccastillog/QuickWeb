@@ -71,7 +71,6 @@ class StoreFrontController extends Controller
             })
             ->where('active', true)
             ->where('featured', true)
-            ->limit(6)
             ->get();
 
         return view('storefront.themes.default.home', [

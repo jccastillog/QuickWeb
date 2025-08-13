@@ -1,9 +1,9 @@
 <!-- resources/views/storefront/themes/default/partials/offers.blade.php -->
 <section id="offers" class="py-5 bg-light">
     <div class="container">
+        @if ($activeOffers->count() > 0)
         <h2 class="text-center mb-4">{{ ('Ofertas Especiales') }}</h2>
 
-        @if ($activeOffers->count() > 0)
             <div class="row g-4 justify-content-{{ $activeOffers->count() === 1 ? 'center' : 'start' }}">
                 @foreach ($activeOffers->take($offersToShow) as $offer)
                     @php
@@ -80,10 +80,10 @@
                 </div>
             @endif
         @else
-            <div class="alert alert-info text-center mb-0">
+{{--             <div class="alert alert-info text-center mb-0">
                 <i class="fas fa-info-circle me-2"></i>
                 {{ ('Actualmente no hay ofertas disponibles') }}
-            </div>
+            </div> --}}
         @endif
     </div>
 </section>

@@ -240,14 +240,19 @@
                                             </div>
                                         @endif
                                     </div>
-
-                                    <div class="form-group col-md-6 d-flex align-items-end">
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="active"
-                                                name="active" value="1"
-                                                {{ old('active', $offer->active) ? 'checked' : '' }}>
-                                            <label class="form-check-label font-weight-bold" for="active">
-                                                Oferta Activa
+                                    <div class="form-group">
+                                        <label class="font-weight-bold d-block">Estado</label>
+                                        <div class="btn-group btn-group-toggle w-100" data-toggle="buttons">
+                                            <label
+                                                class="btn btn-outline-success {{ old('active', $offer->active) ? 'active' : '' }}">
+                                                <input type="radio" name="active" value="1"
+                                                    {{ old('active', $offer->active) ? 'checked' : '' }}> Activo
+                                            </label>
+                                            <label
+                                                class="btn btn-outline-danger {{ !old('active', $offer->active) ? 'active' : '' }}">
+                                                <input type="radio" name="active" value="0"
+                                                    {{ !old('active', $offer->active) ? 'checked' : '' }}>
+                                                Inactivo
                                             </label>
                                         </div>
                                     </div>
@@ -277,79 +282,79 @@
 
     @push('scripts')
         <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('Documento cargado - Script de ofertas iniciado');
+            document.addEventListener('DOMContentLoaded', function() {
+                console.log('Documento cargado - Script de ofertas iniciado');
 
-            // Elementos del DOM
-            const scopeRadios = document.querySelectorAll('input[name="scope"]');
-            const typeSelect = document.getElementById('type');
-            const categorySelector = document.getElementById('category-selector');
-            const productSelector = document.getElementById('product-selector');
-            const discountPercentage = document.getElementById('discount-percentage');
-            const discountAmount = document.getElementById('discount-amount');
+                // Elementos del DOM
+                const scopeRadios = document.querySelectorAll('input[name="scope"]');
+                const typeSelect = document.getElementById('type');
+                const categorySelector = document.getElementById('category-selector');
+                const productSelector = document.getElementById('product-selector');
+                const discountPercentage = document.getElementById('discount-percentage');
+                const discountAmount = document.getElementById('discount-amount');
 
-            // Función para actualizar los campos de alcance
-            function updateScopeFields() {
-                console.log('Actualizando campos de alcance...');
-                
-                // Ocultar ambos selectores primero
-                if(categorySelector) categorySelector.style.display = 'none';
-                if(productSelector) productSelector.style.display = 'none';
+                // Función para actualizar los campos de alcance
+                function updateScopeFields() {
+                    console.log('Actualizando campos de alcance...');
 
-                // Obtener el radio button seleccionado
-                const selectedScope = document.querySelector('input[name="scope"]:checked');
-                
-                if(selectedScope) {
-                    console.log('Alcance seleccionado:', selectedScope.value);
-                    
-                    if(selectedScope.value === 'category' && categorySelector) {
-                        categorySelector.style.display = 'block';
-                    } else if(selectedScope.value === 'product' && productSelector) {
-                        productSelector.style.display = 'block';
+                    // Ocultar ambos selectores primero
+                    if (categorySelector) categorySelector.style.display = 'none';
+                    if (productSelector) productSelector.style.display = 'none';
+
+                    // Obtener el radio button seleccionado
+                    const selectedScope = document.querySelector('input[name="scope"]:checked');
+
+                    if (selectedScope) {
+                        console.log('Alcance seleccionado:', selectedScope.value);
+
+                        if (selectedScope.value === 'category' && categorySelector) {
+                            categorySelector.style.display = 'block';
+                        } else if (selectedScope.value === 'product' && productSelector) {
+                            productSelector.style.display = 'block';
+                        }
                     }
                 }
-            }
 
-            // Función para actualizar los campos de tipo
-            function updateTypeFields() {
-                console.log('Actualizando campos de tipo...');
-                
-                // Ocultar ambos campos de descuento primero
-                if(discountPercentage) discountPercentage.style.display = 'none';
-                if(discountAmount) discountPercentage.style.display = 'none';
+                // Función para actualizar los campos de tipo
+                function updateTypeFields() {
+                    console.log('Actualizando campos de tipo...');
 
-                if(typeSelect) {
-                    console.log('Tipo seleccionado:', typeSelect.value);
-                    
-                    if(typeSelect.value === 'percentage' && discountPercentage) {
-                        discountPercentage.style.display = 'block';
-                    } else if(typeSelect.value === 'fixed_amount' && discountAmount) {
-                        discountAmount.style.display = 'block';
+                    // Ocultar ambos campos de descuento primero
+                    if (discountPercentage) discountPercentage.style.display = 'none';
+                    if (discountAmount) discountPercentage.style.display = 'none';
+
+                    if (typeSelect) {
+                        console.log('Tipo seleccionado:', typeSelect.value);
+
+                        if (typeSelect.value === 'percentage' && discountPercentage) {
+                            discountPercentage.style.display = 'block';
+                        } else if (typeSelect.value === 'fixed_amount' && discountAmount) {
+                            discountAmount.style.display = 'block';
+                        }
                     }
                 }
-            }
 
-            // Añadir event listeners
-            if(scopeRadios) {
-                scopeRadios.forEach(radio => {
-                    radio.addEventListener('change', updateScopeFields);
-                });
-            }
+                // Añadir event listeners
+                if (scopeRadios) {
+                    scopeRadios.forEach(radio => {
+                        radio.addEventListener('change', updateScopeFields);
+                    });
+                }
 
-            if(typeSelect) {
-                typeSelect.addEventListener('change', updateTypeFields);
-            }
+                if (typeSelect) {
+                    typeSelect.addEventListener('change', updateTypeFields);
+                }
 
-            // Ejecutar al cargar la página
-            updateScopeFields();
-            updateTypeFields();
-
-            // Forzar actualización después de un breve retraso para valores old()
-            setTimeout(() => {
+                // Ejecutar al cargar la página
                 updateScopeFields();
                 updateTypeFields();
-            }, 100);
-        });
+
+                // Forzar actualización después de un breve retraso para valores old()
+                setTimeout(() => {
+                    updateScopeFields();
+                    updateTypeFields();
+                }, 100);
+            });
         </script>
         <script>
             function confirmDelete() {
@@ -357,6 +362,6 @@
                     document.getElementById('delete-form').submit();
                 }
             }
-            </script>
-        @endpush
+        </script>
+    @endpush
 @endsection
