@@ -2,6 +2,7 @@
 <html lang="es" dir="ltr">
 <head>
     @include('layouts.head')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
 <!-- Google tag (gtag.js) -->

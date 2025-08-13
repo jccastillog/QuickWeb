@@ -30,45 +30,47 @@
 </script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         const form = document.getElementById('newsletterForm');
         const message = document.getElementById('newsletterMessage');
 
-        form.addEventListener('submit', function (e) {
+        form.addEventListener('submit', function(e) {
             e.preventDefault();
 
             const formData = new FormData(form);
-            formData.append('_token', document.querySelector('input[name="_token"]').value);
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
             fetch(form.action, {
-                method: 'POST',
-                body: formData
-            })
-            .then(async response => {
-                if (!response.ok) {
-                    throw new Error(`Respuesta HTTP ${response.status}`);
-                }
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    body: formData
+                })
+                .then(async response => {
+                    if (!response.ok) {
+                        throw new Error(`Respuesta HTTP ${response.status}`);
+                    }
 
-                const contentType = response.headers.get('content-type');
-                if (contentType && contentType.includes('application/json')) {
-                    const data = await response.json();
-                    message.innerText = data.message;
-                    message.classList.remove('text-danger');
-                    message.classList.add('text-success');
+                    const contentType = response.headers.get('content-type');
+                    if (contentType && contentType.includes('application/json')) {
+                        const data = await response.json();
+                        message.innerText = data.message;
+                        message.classList.remove('text-danger');
+                        message.classList.add('text-success');
+                        message.style.display = 'block';
+                        form.reset();
+                    } else {
+                        throw new Error('La respuesta no fue JSON');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error al enviar newsletter:', error);
+                    message.innerText = 'Ocurrió un error técnico: ' + error.message;
+                    message.classList.remove('text-success');
+                    message.classList.add('text-danger');
                     message.style.display = 'block';
-                    form.reset();
-                } else {
-                    throw new Error('La respuesta no fue JSON');
-                }
-            })
-            .catch(error => {
-                console.error('Error al enviar newsletter:', error);
-                message.innerText = 'Ocurrió un error técnico: ' + error.message;
-                message.classList.remove('text-success');
-                message.classList.add('text-danger');
-                message.style.display = 'block';
-            });
+                });
         });
     });
 </script>
-
