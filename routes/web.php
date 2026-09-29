@@ -20,9 +20,8 @@ Route::get('/user/password', function () {
     return view('auth.passwords.update');
 })->middleware('auth')->name('password.edit');
 
-Route::get('/pageadmin', function () {
-    return view('welcome');
-})->name('welcome');
+// La página de QuickWeb vive en "/"; se conserva /pageadmin para enlaces antiguos
+Route::permanentRedirect('/pageadmin', '/')->name('welcome');
 
 // Rutas exclusivas del administrador de la plataforma
 Route::middleware(['auth', 'role:admin'])->group(function () {

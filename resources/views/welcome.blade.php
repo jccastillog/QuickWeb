@@ -171,8 +171,8 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6">
-                    <h1 class="display-4 fw-bold mb-4">Tu aliado digital para crecer con una web accesible y profesional</h1>
-                    <p class="lead mb-4">En QuickWeb creamos sitios web que no solo se ven bien, sino que están diseñados para que cualquier persona, sin importar su nivel técnico, pueda gestionarlos con facilidad.</p>
+                    <h1 class="display-4 fw-bold mb-4">Tu tienda en línea recibiendo pedidos por WhatsApp</h1>
+                    <p class="lead mb-4">Creamos tu tienda con tus productos, precios y ofertas en pocos días. Tus clientes arman el pedido y te llega completo a WhatsApp. Sin saber de tecnología: tú la administras desde un panel sencillo.</p>
                     <div class="d-flex gap-3">
                         <a href="#servicios" class="btn qw-btn-primary">Ver planes</a>
                         <a href="#contacto" class="btn btn-outline-light">Contactar</a>
@@ -227,10 +227,10 @@
                 <div class="col-md-6 col-lg-3">
                     <div class="qw-card p-4 text-center">
                         <div class="qw-card-icon">
-                            <i class="fas fa-shield-alt"></i>
+                            <i class="fab fa-whatsapp"></i>
                         </div>
-                        <h4>Hosting Seguro</h4>
-                        <p>Nos encargamos del alojamiento y seguridad para que tu sitio esté siempre disponible.</p>
+                        <h4>Pedidos por WhatsApp</h4>
+                        <p>Tus clientes eligen productos y cantidades; el pedido te llega completo, con el total, a tu WhatsApp.</p>
                     </div>
                 </div>
             </div>

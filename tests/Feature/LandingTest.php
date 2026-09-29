@@ -24,4 +24,9 @@ class LandingTest extends TestCase
             ->assertSee('Quiero el plan Negocio')
             ->assertDontSee('Quiero el plan Pro');
     }
+
+    public function test_old_pageadmin_url_redirects_to_home(): void
+    {
+        $this->get('http://quickweb.com.co/pageadmin')->assertStatus(301)->assertRedirect('/');
+    }
 }
