@@ -22,11 +22,12 @@ class IdentifyClient
         $exemptPaths = [
             '/',              // solo permitimos "/" si es dominio principal
             'pageadmin',
+            'home',
             'clients*',
             'plans*',
             'clients.categories.create',
             'login',
-            'user/password',
+            'user/*',
             'logout',
             'forgot-password',
             'reset-password*'

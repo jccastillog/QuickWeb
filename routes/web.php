@@ -20,6 +20,11 @@ Route::get('/user/password', function () {
     return view('auth.passwords.update');
 })->middleware('auth')->name('password.edit');
 
+// Destino tras iniciar sesión (y de /login con sesión abierta): admin → tiendas, dueño → su tienda
+Route::get('/home', function (Illuminate\Http\Request $request) {
+    return app(Laravel\Fortify\Contracts\LoginResponse::class)->toResponse($request);
+})->middleware('auth')->name('home');
+
 // La página de QuickWeb vive en "/"; se conserva /pageadmin para enlaces antiguos
 Route::permanentRedirect('/pageadmin', '/')->name('welcome');
 
