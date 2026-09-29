@@ -22,7 +22,8 @@ class LandingTest extends TestCase
             ->assertSee('Hasta 20 productos')
             ->assertSee('Más popular')
             ->assertSee('Quiero el plan Negocio')
-            ->assertDontSee('Quiero el plan Pro');
+            ->assertDontSee('Quiero el plan Pro')
+            ->assertSee('href="https://atravesiamo.quickweb.com.co"', false);
     }
 
     public function test_old_pageadmin_url_redirects_to_home(): void

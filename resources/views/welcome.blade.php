@@ -173,8 +173,13 @@
                 <div class="col-lg-6">
                     <h1 class="display-4 fw-bold mb-4">Tu tienda en línea recibiendo pedidos por WhatsApp</h1>
                     <p class="lead mb-4">Creamos tu tienda con tus productos, precios y ofertas en pocos días. Tus clientes arman el pedido y te llega completo a WhatsApp. Sin saber de tecnología: tú la administras desde un panel sencillo.</p>
-                    <div class="d-flex gap-3">
+                    <div class="d-flex flex-wrap gap-3">
                         <a href="#servicios" class="btn qw-btn-primary">Ver planes</a>
+                        @if (config('quickweb.demo_store_url'))
+                            <a href="{{ config('quickweb.demo_store_url') }}" target="_blank" rel="noopener" class="btn btn-light">
+                                <i class="fas fa-store me-1"></i> Ver una tienda de ejemplo
+                            </a>
+                        @endif
                         <a href="#contacto" class="btn btn-outline-light">Contactar</a>
                     </div>
                 </div>
@@ -282,6 +287,15 @@
                     <p class="text-center text-muted">Escríbenos para conocer nuestros planes.</p>
                 @endforelse
             </div>
+
+            @if (config('quickweb.demo_store_url'))
+                <div class="text-center mt-5">
+                    <p class="mb-2">¿Quieres ver cómo queda? Abre la tienda desde tu celular y prueba hacer un pedido.</p>
+                    <a href="{{ config('quickweb.demo_store_url') }}" target="_blank" rel="noopener" class="btn btn-outline-primary">
+                        <i class="fas fa-store me-1"></i> Ver una tienda de ejemplo
+                    </a>
+                </div>
+            @endif
 
             <p class="text-center small text-muted mt-4 mb-0">
                 Precios mensuales en pesos colombianos.

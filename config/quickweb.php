@@ -37,6 +37,9 @@ return [
     // Recibe el resumen diario de tiendas por vencer (si está vacío, se usa el correo de los admin)
     'admin_email' => env('QUICKWEB_ADMIN_EMAIL'),
 
+    // Tienda que la página de QuickWeb muestra como ejemplo (vacío = no se muestra el botón)
+    'demo_store_url' => env('QUICKWEB_DEMO_STORE_URL', 'https://atravesiamo.quickweb.com.co'),
+
     // Contacto que ven los dueños de tienda para renovar (número con indicativo, sin +)
     'support_whatsapp' => env('QUICKWEB_SUPPORT_WHATSAPP', '573213086428'),
 
