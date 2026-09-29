@@ -82,13 +82,13 @@ class CategoryController extends Controller
     {
         \Log::info('Attempting to delete category: '.$category->id);
         try {
+            if ($category->products()->whereHas('offers')->exists()) {
+                return back()->with('error', 'No puedes eliminar esta categoría porque sus productos tienen ofertas activas.');
+            }
+
             if ($category->image) {
                 $this->deleteMedia($category->image->media);
                 $category->image()->delete();
-            }
-
-            if ($category->products()->whereHas('offers')->exists()) {
-                return back()->with('error', 'No puedes eliminar esta categoría porque sus productos tienen ofertas activas.');
             }
 
             $category->delete();

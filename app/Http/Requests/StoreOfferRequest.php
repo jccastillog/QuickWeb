@@ -5,6 +5,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreOfferRequest extends FormRequest
 {
@@ -15,8 +16,13 @@ class StoreOfferRequest extends FormRequest
 
     public function rules()
     {
+        $clientId = $this->route('client')->id;
+
         return [
-            'product_id' => 'nullable|exists:products,id',
+            'product_id' => [
+                'nullable',
+                Rule::exists('products', 'id')->where('client_id', $clientId)
+            ],
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'discount' => 'nullable|numeric|min:0|max:100',

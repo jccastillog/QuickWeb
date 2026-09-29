@@ -26,6 +26,12 @@ class Client extends Model
         'expires_at'
     ];
 
+    protected $hidden = [
+        'user_id',
+        'expires_at',
+        'deleted_at',
+    ];
+
     protected $casts = [
         'active' => 'boolean',
         'expires_at' => 'datetime'

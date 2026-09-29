@@ -18,26 +18,6 @@ use App\Http\Controllers\API\StoreFrontController;
 */
 
 
-Route::get('test', function() {
-    try {
-        return response()->json([
-            'status' => 'API funcionando',
-            'data' => [
-                'clients_count' => App\Models\Client::count(),
-                'first_client' => App\Models\Client::with('siteSettings')->first(),
-                'categories_count' => App\Models\Category::count(),
-                'products_count' => App\Models\Product::count(),
-                'first_product' => App\Models\Product::with(['category', 'image'])->first()
-            ]
-        ]);
-    } catch (\Exception $e) {
-        return response()->json([
-            'error' => $e->getMessage(),
-            'trace' => $e->getTrace()
-        ], 500);
-    }
-});
-
 // Rutas API para tiendas
 
     Route::get('store/{domain}', [StoreFrontController::class, 'getStoreData']);

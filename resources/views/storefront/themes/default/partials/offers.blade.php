@@ -4,7 +4,7 @@
         @if ($activeOffers->count() > 0)
         <h2 class="text-center mb-4">{{ ('Ofertas Especiales') }}</h2>
 
-            <div class="row g-4 justify-content-{{ $activeOffers->count() === 1 ? 'center' : 'start' }}">
+            <div class="row g-4 justify-content-{{ $activeOffers->count() <= 3 ? 'center' : 'start' }}">
                 @foreach ($activeOffers->take($offersToShow) as $offer)
                     @php
                         $product = $offer->product;

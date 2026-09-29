@@ -4,7 +4,7 @@
 
         @php $count = $featuredProducts->count(); @endphp
 
-        <div class="row justify-content-{{ $count === 1 ? 'center' : 'start' }}">
+        <div class="row justify-content-{{ $count <= 3. ? 'center' : 'start' }}">
             @foreach ($featuredProducts as $product)
                 <div class="col-sm-6 col-md-4 col-lg-3 mb-4 d-flex">
                     <x-product-card :product="$product" />

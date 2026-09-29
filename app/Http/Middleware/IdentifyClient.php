@@ -43,8 +43,8 @@ class IdentifyClient
 
         $client = Client::where('domain', $domain)->first();
 
-        if (!$client) {
-            \Log::warning('[Middleware] Cliente no encontrado para: ' . $domain);
+        if (!$client || !$client->active) {
+            \Log::warning('[Middleware] Cliente no encontrado o inactivo para: ' . $domain);
             abort(404, 'Tienda no encontrada');
         }
 

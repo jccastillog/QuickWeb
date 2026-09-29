@@ -126,10 +126,6 @@ class ClientController extends Controller
                 $client->favicon()->delete();
             }
 
-            if ($client->siteSettings) {
-                $client->siteSettings->update($request->all());
-            }
-
             return redirect()
                 ->route('clients.index')
                 ->with('success', 'Tienda actualizada exitosamente');

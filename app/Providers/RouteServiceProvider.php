@@ -24,6 +24,8 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $this->configureRateLimiting();
+
         $this->routes(function () {
             Route::middleware('api')
                 ->prefix('api')
@@ -34,10 +36,19 @@ class RouteServiceProvider extends ServiceProvider
         });
     }
 
-    protected function RateLimiting()
+    protected function configureRateLimiting(): void
     {
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
+        });
+
+        // Evita que el formulario de catálogo se use para enviar correos masivos
+        RateLimiter::for('newsletter', function (Request $request) {
+            return [
+                Limit::perMinute(3)->by('min:' . $request->ip()),
+                Limit::perDay(20)->by('day:' . $request->ip()),
+                Limit::perDay(3)->by('email:' . strtolower((string) $request->input('email'))),
+            ];
         });
     }
 }

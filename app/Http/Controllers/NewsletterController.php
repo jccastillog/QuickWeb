@@ -26,7 +26,7 @@ class NewsletterController extends Controller
 
     public function subscribeViaDomain(Request $request, $domain)
     {
-        $client = Client::where('domain', $domain)->with('siteSettings')->firstOrFail();
+        $client = Client::where('domain', $domain)->where('active', true)->with('siteSettings')->firstOrFail();
 
         $request->validate(['email' => 'required|email']);
 

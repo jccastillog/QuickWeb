@@ -23,7 +23,7 @@ class UpdateCategoryRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('categories')->ignore($category->id)
+                Rule::unique('categories')->where('client_id', $category->client_id)->ignore($category->id)
             ],
             'description' => 'nullable|string',
             'order' => 'nullable|integer|min:0',

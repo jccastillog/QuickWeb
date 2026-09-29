@@ -121,8 +121,17 @@ class StoreFrontController extends Controller
 
     public function getStoreData($domain)
     {
-        $client = Client::with(['siteSettings', 'socialNetworks', 'pages', 'testimonials', 'offers'])
+        $client = Client::with([
+                'siteSettings',
+                'socialNetworks' => fn ($query) => $query->where('active', true),
+                'pages' => fn ($query) => $query->where('active', true),
+                'testimonials' => fn ($query) => $query->where('active', true),
+                'offers' => fn ($query) => $query->where('active', true)
+                    ->where('start_date', '<=', now())
+                    ->where('end_date', '>=', now()),
+            ])
             ->where('domain', $domain)
+            ->where('active', true)
             ->firstOrFail();
 
         $categories = Category::with([
@@ -141,13 +150,14 @@ class StoreFrontController extends Controller
 
     public function getProduct($domain, $productSlug)
     {
-        $client = Client::where('domain', $domain)->firstOrFail();
+        $client = Client::where('domain', $domain)->where('active', true)->firstOrFail();
 
         $product = Product::with(['category', 'image'])
             ->whereHas('category', function ($query) use ($client) {
                 $query->where('client_id', $client->id);
             })
             ->where('slug', $productSlug)
+            ->where('active', true)
             ->firstOrFail();
 
         return response()->json([

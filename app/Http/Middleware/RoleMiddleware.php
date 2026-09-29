@@ -15,8 +15,10 @@ class RoleMiddleware
      */
     public function handle($request, Closure $next, ...$roles)
     {
-        if (!in_array($request->user()->role, $roles)) {
-            return redirect()->back()->with('warning', 'No tienes permiso para acceder a esta sección');
+        $user = $request->user();
+
+        if (!$user || !in_array($user->role, $roles)) {
+            abort(403, 'No tienes permiso para acceder a esta sección');
         }
 
         return $next($request);

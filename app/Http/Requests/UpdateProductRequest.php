@@ -17,14 +17,18 @@ class UpdateProductRequest extends FormRequest
     public function rules()
     {
         $product = $this->route('product');
+        $clientId = $product->client_id;
 
         return [
-            'category_id' => 'required|exists:categories,id',
+            'category_id' => [
+                'required',
+                Rule::exists('categories', 'id')->where('client_id', $clientId)
+            ],
             'name' => [
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('products')->ignore($product->id)
+                Rule::unique('products')->where('client_id', $clientId)->ignore($product->id)
             ],
             'description' => 'required|string',
             'price' => 'required|numeric|min:0',
@@ -34,13 +38,13 @@ class UpdateProductRequest extends FormRequest
                 'nullable',
                 'string',
                 'max:100',
-                Rule::unique('products')->ignore($product->id)
+                Rule::unique('products')->where('client_id', $clientId)->ignore($product->id)
             ],
             'barcode' => [
                 'nullable',
                 'string',
                 'max:100',
-                Rule::unique('products')->ignore($product->id)
+                Rule::unique('products')->where('client_id', $clientId)->ignore($product->id)
             ],
             'featured' => 'required|boolean',
             'active' => 'required|boolean',
