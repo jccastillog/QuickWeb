@@ -16,24 +16,35 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light py-2 sticky-top shadow-sm">
     <div class="container">
 
-        <a class="navbar-brand d-flex align-items-center gap-2 fw-bold fs-3 text-primary" href="#">
-            <img src="{{ $client->logo->media->full_url }}" alt="Logo" style="height: 40px;">
+        <a class="navbar-brand d-flex align-items-center gap-2 fw-bold fs-3 text-primary" href="{{ $client->storeUrl() }}">
+            @if ($client->logo?->media)
+                <img src="{{ $client->logo->media->full_url }}" alt="Logo {{ $client->store_name }}" style="height: 40px;">
+            @endif
             {{ $client->store_name }}
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+
+        <div class="d-flex align-items-center gap-2 order-lg-last">
+            <button type="button" class="btn btn-primary position-relative" data-bs-toggle="offcanvas"
+                data-bs-target="#cartOffcanvas" aria-controls="cartOffcanvas" aria-label="Ver carrito">
+                <i class="bi bi-bag"></i>
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none"
+                    data-cart-count>0</span>
+            </button>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
 
         <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link fw-semibold fs-5" href="#">{{ __('Inicio') }}</a>
+                    <a class="nav-link fw-semibold fs-5" href="{{ $client->storeUrl() }}">{{ __('Inicio') }}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link fw-semibold fs-5" href="#categorias">{{ __('Categorías') }}</a>
+                    <a class="nav-link fw-semibold fs-5" href="{{ $client->storeUrl() }}#categorias">{{ __('Categorías') }}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link fw-semibold fs-5" href="#productos">{{ __('Productos') }}</a>
+                    <a class="nav-link fw-semibold fs-5" href="{{ $client->storeUrl() }}#productos">{{ __('Productos') }}</a>
                 </li>
             </ul>
         </div>

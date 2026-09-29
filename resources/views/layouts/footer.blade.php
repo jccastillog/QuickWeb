@@ -1,6 +1,6 @@
     <footer id="contacto" class="bg-dark text-white py-4">
 
-        <a href="https://wa.me/{{ $client->siteSettings->whatsapp }}" target="_blank" id="whatsappButton"
+        <a href="https://wa.me/{{ $client->siteSettings?->whatsapp_number }}" target="_blank" id="whatsappButton"
             class="btn btn-success rounded-circle position-fixed"
             style="width:60px; height:60px; bottom:30px; left:30px; z-index:1000;">
             <i class="bi bi-whatsapp fs-4"></i>

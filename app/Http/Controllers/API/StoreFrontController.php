@@ -37,7 +37,7 @@ class StoreFrontController extends Controller
                 $query->where('active', true)
                     ->where('start_date', '<=', now())
                     ->where('end_date', '>=', now())
-                    ->with(['image.media'])
+                    ->with(['image.media', 'product'])
                     ->orderBy('created_at', 'desc');
             },
             'logo.media'
@@ -65,7 +65,7 @@ class StoreFrontController extends Controller
         $allImages = $allImages->flatten()->filter()->sortByDesc('created_at')->take(10);
 
         // Preparar datos para la vista
-        $featuredProducts = Product::with(['image.media'])
+        $featuredProducts = Product::with(['image.media', 'activeOffer'])
             ->whereHas('category', function ($query) use ($client) {
                 $query->where('client_id', $client->id);
             })
@@ -85,13 +85,15 @@ class StoreFrontController extends Controller
 
     public function showCategory($domain, $categorySlug)
     {
-        $client = Client::where('domain', $domain)->firstOrFail();
+        $client = $this->currentClient();
 
         $category = Category::with([
-            'products' => function ($query) {
-                $query->with(['image'])->where('active', true);
-            }
-        ])
+                'image.media',
+                'products' => fn ($query) => $query->where('active', true)
+                    ->with(['image.media', 'activeOffer'])
+                    ->orderByDesc('featured')
+                    ->orderBy('name'),
+            ])
             ->where('client_id', $client->id)
             ->where('slug', $categorySlug)
             ->firstOrFail();
@@ -101,22 +103,34 @@ class StoreFrontController extends Controller
 
     public function showProduct($domain, $productSlug)
     {
-        $client = Client::where('domain', $domain)->firstOrFail();
+        $client = $this->currentClient();
 
-        $product = Product::with(['category', 'image'])
-            ->whereHas('category', function ($query) use ($client) {
-                $query->where('client_id', $client->id);
-            })
+        $product = Product::with(['category', 'image.media', 'activeOffer'])
+            ->where('client_id', $client->id)
             ->where('slug', $productSlug)
+            ->where('active', true)
             ->firstOrFail();
 
-        $relatedProducts = Product::where('category_id', $product->category_id)
+        $relatedProducts = Product::with(['image.media', 'activeOffer'])
+            ->where('client_id', $client->id)
+            ->where('category_id', $product->category_id)
             ->where('id', '!=', $product->id)
+            ->where('active', true)
             ->inRandomOrder()
             ->limit(4)
             ->get();
 
         return view('storefront.themes.default.product', compact('client', 'product', 'relatedProducts'));
+    }
+
+    /**
+     * Tienda identificada por IdentifyClient, con lo que necesita el layout.
+     */
+    protected function currentClient(): Client
+    {
+        $client = request()->attributes->get('currentClient') ?? abort(404, 'Tienda no encontrada');
+
+        return $client->load(['siteSettings', 'socialNetworks', 'pages', 'logo.media', 'favicon.media']);
     }
 
     public function getStoreData($domain)

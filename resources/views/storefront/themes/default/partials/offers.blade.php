@@ -8,17 +8,14 @@
                 @foreach ($activeOffers->take($offersToShow) as $offer)
                     @php
                         $product = $offer->product;
-                        $discountedPrice =
-                            $offer->type === 'percentage'
-                                ? $product->price * (1 - $offer->discount / 100)
-                                : $product->price - $offer->discount_amount;
+                        $discountedPrice = $product ? $offer->applyTo($product->price) : null;
                     @endphp
 
                     <div class="col-md-4">
                         <div class="card h-100 shadow-sm border-0 position-relative overflow-hidden">
                             <span class="position-absolute top-0 end-0 m-2 badge rounded-pill bg-danger">
-                                @if ($offer->type === 'percentage')
-                                    -{{ $offer->discount }}%
+                                @if ($offer->type !== 'fixed_amount' && $offer->discount > 0)
+                                    -{{ rtrim(rtrim($offer->discount, '0'), '.') }}%
                                 @else
                                     Oferta
                                 @endif
@@ -27,7 +24,7 @@
                             @if ($offer->image)
                                 <div class="ratio ratio-4x3">
                                     <img src="{{ $offer->image->media->full_url }}"
-                                        class="img-fluid object-fit-cover rounded-top" alt="{{ $product->name }}">
+                                        class="img-fluid object-fit-cover rounded-top" alt="{{ $offer->title }}" loading="lazy">
                                 </div>
                             @else
                                 <div class="bg-secondary d-flex align-items-center justify-content-center"
@@ -39,17 +36,20 @@
                             <div class="card-body d-flex flex-column">
                                 <h5 class="fw-bold text-dark mb-1">{{ $offer->title }}</h5>
                                 <p class="text-muted small mb-2">
-                                    {{ Str::limit($offer->description ?? $product->description, 100) }}
+                                    {{ Str::limit($offer->description ?? $product?->description, 100) }}
                                 </p>
-                                <div class="badge bg-danger position-absolute top-0 end-0 m-2 fs-6">
-                                    @if ($offer->type === 'percentage')
-                                        <span
-                                            class="text-decoration-line-through text-muted">${{ number_format($product->price, 0) }}</span>
-                                    @endif
-                                    <span
-                                        class="fw-bold fs-5 text-primary">${{ number_format($discountedPrice, 0) }}
-                                    </span>
-                                </div>
+
+                                @if ($product)
+                                    <div class="mt-auto d-flex align-items-center justify-content-between gap-2 flex-wrap mb-2">
+                                        <div>
+                                            @if ($discountedPrice < (float) $product->price)
+                                                <small class="text-muted text-decoration-line-through d-block">{{ App\Support\Money::format($product->price) }}</small>
+                                            @endif
+                                            <span class="fw-bold fs-5 text-primary">{{ App\Support\Money::format($discountedPrice) }}</span>
+                                        </div>
+                                        <x-add-to-cart-button :product="$product" :client="$client" class="btn btn-sm btn-primary" />
+                                    </div>
+                                @endif
 
                                 @if ($offer->promo_code)
                                     <div class="mb-3">

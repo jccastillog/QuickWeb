@@ -108,8 +108,16 @@ class Client extends Model
             return 'https://' . $this->custom_domain;
         }
 
-        return app()->environment('local')
-            ? 'http://127.0.0.1:8000/' . $this->domain
-            : 'https://' . $this->domain . '.quickweb.com.co';
+        return app()->environment('production')
+            ? 'https://' . $this->domain . '.quickweb.com.co'
+            : url($this->domain);
+    }
+
+    /**
+     * URL pública de una sección de la tienda, ej: storeUrl('producto/camiseta')
+     */
+    public function storeUrl(string $path = ''): string
+    {
+        return rtrim($this->url, '/') . ($path !== '' ? '/' . ltrim($path, '/') : '');
     }
 }

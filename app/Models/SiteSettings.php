@@ -32,4 +32,20 @@ class SiteSettings extends Model
     {
         return $this->belongsTo(Client::class);
     }
+
+    // Accesores
+
+    /**
+     * Número de WhatsApp listo para wa.me: solo dígitos y con indicativo de país.
+     */
+    public function getWhatsappNumberAttribute(): string
+    {
+        $digits = preg_replace('/\D+/', '', (string) $this->whatsapp);
+
+        if (strlen($digits) === config('quickweb.national_number_length')) {
+            $digits = config('quickweb.default_country_code') . $digits;
+        }
+
+        return $digits;
+    }
 }

@@ -19,6 +19,8 @@ class Offer extends Model
         'discount_amount',
         'start_date',
         'end_date',
+        'type',
+        'promo_code',
         'image_path',
         'active'
     ];
@@ -55,6 +57,25 @@ class Offer extends Model
         return $query->where('active', true)
             ->where('start_date', '<=', now())
             ->where('end_date', '>=', now());
+    }
+
+    /**
+     * Precio resultante de aplicar esta oferta a un precio base.
+     * "Compra X lleva Y" no modifica el precio unitario.
+     */
+    public function applyTo($price): float
+    {
+        $price = (float) $price;
+
+        $result = match (true) {
+            $this->type === 'buy_x_get_y' => $price,
+            $this->type === 'fixed_amount' && $this->discount_amount > 0 => $price - $this->discount_amount,
+            $this->discount > 0 => $price * (1 - $this->discount / 100),
+            $this->discount_amount > 0 => $price - $this->discount_amount,
+            default => $price,
+        };
+
+        return max(0, round($result, 2));
     }
 
     // Accesores

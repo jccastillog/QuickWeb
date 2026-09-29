@@ -24,6 +24,13 @@ class StoreOfferRequest extends FormRequest
                 Rule::exists('products', 'id')->where('client_id', $clientId)
             ],
             'title' => 'required|string|max:255',
+            'type' => 'nullable|in:percentage,fixed_amount,buy_x_get_y',
+            'promo_code' => [
+                'nullable',
+                'string',
+                'max:50',
+                Rule::unique('offers', 'promo_code')->ignore($this->route('offer'))
+            ],
             'description' => 'nullable|string',
             'discount' => 'nullable|numeric|min:0|max:100',
             'discount_amount' => 'nullable|numeric|min:0',

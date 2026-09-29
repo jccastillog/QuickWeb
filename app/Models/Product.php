@@ -50,6 +50,16 @@ class Product extends Model
         return $this->hasMany(Offer::class);
     }
 
+    // Oferta vigente más reciente del producto
+    public function activeOffer()
+    {
+        return $this->hasOne(Offer::class)
+            ->where('active', true)
+            ->where('start_date', '<=', now())
+            ->where('end_date', '>=', now())
+            ->latest('start_date');
+    }
+
     // Relaciones polimórficas para imágenes
     public function image()
     {
@@ -80,6 +90,29 @@ class Product extends Model
     }
 
     // Accesores
+
+    /**
+     * Precio a cobrar: aplica la oferta vigente si existe.
+     */
+    public function getFinalPriceAttribute(): float
+    {
+        return $this->activeOffer
+            ? $this->activeOffer->applyTo($this->price)
+            : (float) $this->price;
+    }
+
+    /**
+     * Precio "antes" para mostrar tachado: precio sin oferta o precio de comparación.
+     */
+    public function getRegularPriceAttribute(): ?float
+    {
+        if ($this->final_price < (float) $this->price) {
+            return (float) $this->price;
+        }
+
+        return $this->has_discount ? (float) $this->compare_price : null;
+    }
+
     public function getFormattedPriceAttribute()
     {
         return '$' . number_format($this->price, 2);

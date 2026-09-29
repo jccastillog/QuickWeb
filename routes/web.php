@@ -102,6 +102,8 @@ if (app()->environment('production')) {
         ->middleware(['web', 'identify.client'])
         ->group(function () {
             Route::get('/', [StoreFrontController::class, 'show'])->name('storefront.home');
+            Route::get('/producto/{productSlug}', [StoreFrontController::class, 'showProduct'])->name('storefront.product');
+            Route::get('/categoria/{categorySlug}', [StoreFrontController::class, 'showCategory'])->name('storefront.category');
 
             // Ruta para servir el CSS dinámico
             Route::get('/css/style.css', function (Illuminate\Http\Request $request) {
@@ -138,6 +140,8 @@ if (app()->environment('production')) {
     Route::group(['middleware' => 'web'], function () {
         Route::group(['prefix' => '{domain}'], function () {
             Route::get('/', [StoreFrontController::class, 'show'])->name('storefront.home');
+            Route::get('/producto/{productSlug}', [StoreFrontController::class, 'showProduct'])->name('storefront.product');
+            Route::get('/categoria/{categorySlug}', [StoreFrontController::class, 'showCategory'])->name('storefront.category');
 
             Route::get('/css/style.css', function ($domain) {
                 $client = \App\Models\Client::where('domain', $domain)->firstOrFail();

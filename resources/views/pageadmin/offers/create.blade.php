@@ -276,7 +276,7 @@
                 
                 // Ocultar ambos campos de descuento primero
                 if(discountPercentage) discountPercentage.style.display = 'none';
-                if(discountAmount) discountPercentage.style.display = 'none';
+                if(discountAmount) discountAmount.style.display = 'none';
 
                 if(typeSelect) {
                     console.log('Tipo seleccionado:', typeSelect.value);
