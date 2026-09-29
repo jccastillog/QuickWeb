@@ -25,6 +25,10 @@ class ProductController extends Controller
 
     public function create(Client $client)
     {
+        if (!$client->canAddProducts()) {
+            return $this->productLimitReached($client);
+        }
+
         $client->load([
                 'categories',
                 'categories.image.media'
@@ -34,6 +38,10 @@ class ProductController extends Controller
 
     public function store(StoreProductRequest $request, Client $client)
     {
+        if (!$client->canAddProducts()) {
+            return $this->productLimitReached($client);
+        }
+
         $validated = $request->validated();
         $validated['client_id'] = $client->id;
 
@@ -127,5 +135,13 @@ class ProductController extends Controller
                 ->with('error', 'Error al eliminar el producto: '.$e->getMessage())
                 ->withInput();
         }
+    }
+
+    private function productLimitReached(Client $client)
+    {
+        return redirect()
+            ->route('clients.show', $client)
+            ->with('error', "El plan {$client->plan->name} permite hasta {$client->productLimit()} productos. "
+                . 'Para agregar más, cambia a un plan superior.');
     }
 }

@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CategoryController;
@@ -13,6 +12,8 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\OfferController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\NewsletterController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\PlanController;
 
 // Rutas de autenticación
 Route::get('/user/password', function () {
@@ -32,6 +33,10 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::get('clients/{client}/users/create', [UserController::class, 'create'])->name('clients.users.create');
     Route::post('clients/{client}/users', [UserController::class, 'store'])->name('clients.users.store');
+
+    Route::post('clients/{client}/payments', [PaymentController::class, 'store'])->name('clients.payments.store');
+
+    Route::resource('plans', PlanController::class)->except(['show', 'destroy']);
 });
 
 // Rutas de administración de una tienda: admin o usuario dueño de la tienda.
@@ -96,64 +101,37 @@ Route::middleware(['auth', 'client.owner'])->prefix('clients/{client}')->scopeBi
 });
 
 // Storefront público de cada tienda
+$storefrontRoutes = function () {
+    Route::get('/', [StoreFrontController::class, 'show'])->name('home');
+    Route::get('/producto/{productSlug}', [StoreFrontController::class, 'showProduct'])->name('product');
+    Route::get('/categoria/{categorySlug}', [StoreFrontController::class, 'showCategory'])->name('category');
+    Route::get('/css/style.css', [StoreFrontController::class, 'stylesheet'])->name('stylesheet');
+
+    Route::post('newsletter', [NewsletterController::class, 'subscribe'])
+        ->middleware('throttle:newsletter')
+        ->name('newsletter');
+};
+
 if (app()->environment('production')) {
 
+    // Subdominios: tienda.quickweb.com.co
     Route::domain('{client}.quickweb.com.co')
         ->middleware(['web', 'identify.client'])
-        ->group(function () {
-            Route::get('/', [StoreFrontController::class, 'show'])->name('storefront.home');
-            Route::get('/producto/{productSlug}', [StoreFrontController::class, 'showProduct'])->name('storefront.product');
-            Route::get('/categoria/{categorySlug}', [StoreFrontController::class, 'showCategory'])->name('storefront.category');
+        ->name('storefront.')
+        ->group($storefrontRoutes);
 
-            // Ruta para servir el CSS dinámico
-            Route::get('/css/style.css', function (Illuminate\Http\Request $request) {
-                try {
-                    // Intentar obtener el cliente de tres formas diferentes
-                    $client = $request->attributes->get('currentClient')
-                        ?? app('currentClient', [])
-                        ?? abort(404, 'Cliente no identificado');
-
-                    if (!view()->exists('storefront.themes.default.style')) {
-                        Log::error("Vista CSS no encontrada para el cliente: " . $client->domain);
-                        abort(500, "Plantilla CSS no disponible");
-                    }
-
-                    return response()
-                        ->view('storefront.themes.default.style', compact('client'))
-                        ->header('Content-Type', 'text/css')
-                        ->header('Cache-Control', 'public, max-age=86400');
-
-                } catch (\Exception $e) {
-                    Log::error("Error generando CSS: " . $e->getMessage());
-                    abort(500, "Error generando hoja de estilos");
-                }
-            })->middleware('identify.client');
-
-            Route::post('newsletter', [NewsletterController::class, 'subscribe'])
-                ->middleware('throttle:newsletter')
-                ->name('newsletter.subscribe');
-
-        });
+    // Dominios propios: cualquier host que no sea quickweb.com.co ni uno de sus subdominios
+    Route::domain('{customDomain}')
+        ->where(['customDomain' => '(?!(www\.)?quickweb\.com\.co$)(?!.*\.quickweb\.com\.co$)[a-z0-9.-]+'])
+        ->middleware(['web', 'identify.client'])
+        ->name('storefront.custom.')
+        ->group($storefrontRoutes);
 
     Route::get('/', fn () => view('welcome'));
 } else {
-    Route::group(['middleware' => 'web'], function () {
-        Route::group(['prefix' => '{domain}'], function () {
-            Route::get('/', [StoreFrontController::class, 'show'])->name('storefront.home');
-            Route::get('/producto/{productSlug}', [StoreFrontController::class, 'showProduct'])->name('storefront.product');
-            Route::get('/categoria/{categorySlug}', [StoreFrontController::class, 'showCategory'])->name('storefront.category');
-
-            Route::get('/css/style.css', function ($domain) {
-                $client = \App\Models\Client::where('domain', $domain)->firstOrFail();
-                return response()
-                    ->view('storefront.themes.default.style', compact('client'))
-                    ->header('Content-Type', 'text/css');
-            });
-
-            Route::post('newsletter', [NewsletterController::class, 'subscribe'])
-                ->middleware('throttle:newsletter')
-                ->name('newsletter.subscribe');
-        });
+    // En local no hay subdominios: la tienda se sirve como /{domain}/...
+    Route::group(['middleware' => 'web'], function () use ($storefrontRoutes) {
+        Route::prefix('{domain}')->name('storefront.')->group($storefrontRoutes);
 
         Route::get('/', fn () => view('welcome'));
     });

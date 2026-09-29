@@ -17,6 +17,8 @@ class Client extends Model
     protected $fillable = [
         'store_name',
         'domain',
+        'custom_domain',
+        'plan_id',
         'primary_color',
         'secondary_color',
         'theme',
@@ -34,7 +36,16 @@ class Client extends Model
 
     protected $casts = [
         'active' => 'boolean',
-        'expires_at' => 'datetime'
+        'expires_at' => 'datetime',
+        'billing_reminder_sent_on' => 'date',
+    ];
+
+    public const BILLING_STATUSES = [
+        'sin_vencimiento' => ['label' => 'Sin vencimiento', 'color' => 'secondary'],
+        'al_dia' => ['label' => 'Al día', 'color' => 'success'],
+        'por_vencer' => ['label' => 'Por vencer', 'color' => 'warning'],
+        'en_gracia' => ['label' => 'Vencida (en gracia)', 'color' => 'danger'],
+        'suspendida' => ['label' => 'Suspendida', 'color' => 'dark'],
     ];
 
     // Relaciones
@@ -73,9 +84,14 @@ class Client extends Model
         return $this->hasMany(Offer::class);
     }
 
-    public function plans()
+    public function plan()
     {
-        return $this->hasMany(Plan::class);
+        return $this->belongsTo(Plan::class);
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class)->latest('paid_at')->latest('id');
     }
 
     public function pages()
@@ -104,7 +120,7 @@ class Client extends Model
 
     public function getUrlAttribute(): string
     {
-        if ($this->custom_domain) {
+        if ($this->custom_domain && app()->environment('production')) {
             return 'https://' . $this->custom_domain;
         }
 
@@ -119,5 +135,70 @@ class Client extends Model
     public function storeUrl(string $path = ''): string
     {
         return rtrim($this->url, '/') . ($path !== '' ? '/' . ltrim($path, '/') : '');
+    }
+
+    // Facturación
+
+    /**
+     * Días que faltan para el vencimiento (negativo si ya venció); null si no vence.
+     */
+    public function daysUntilExpiry(): ?int
+    {
+        if (!$this->expires_at) {
+            return null;
+        }
+
+        return (int) now()->startOfDay()->diffInDays($this->expires_at->copy()->startOfDay(), false);
+    }
+
+    public function billingStatus(): string
+    {
+        $days = $this->daysUntilExpiry();
+
+        return match (true) {
+            $days === null => 'sin_vencimiento',
+            $days > config('quickweb.billing.warning_days') => 'al_dia',
+            $days >= 0 => 'por_vencer',
+            $days >= -config('quickweb.billing.grace_days') => 'en_gracia',
+            default => 'suspendida',
+        };
+    }
+
+    public function billingStatusLabel(): string
+    {
+        return self::BILLING_STATUSES[$this->billingStatus()]['label'];
+    }
+
+    public function billingStatusColor(): string
+    {
+        return self::BILLING_STATUSES[$this->billingStatus()]['color'];
+    }
+
+    public function isSuspended(): bool
+    {
+        return $this->billingStatus() === 'suspendida';
+    }
+
+    /**
+     * Fecha a partir de la cual la tienda se suspende si no paga.
+     */
+    public function suspendsOn(): ?\Illuminate\Support\Carbon
+    {
+        return $this->expires_at?->copy()->startOfDay()->addDays(config('quickweb.billing.grace_days') + 1);
+    }
+
+    /**
+     * Límite de productos según el plan; sin plan o plan ilimitado no hay límite.
+     */
+    public function productLimit(): ?int
+    {
+        return $this->plan?->product_limit;
+    }
+
+    public function canAddProducts(): bool
+    {
+        $limit = $this->productLimit();
+
+        return $limit === null || $this->products()->count() < $limit;
     }
 }

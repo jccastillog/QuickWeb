@@ -4,19 +4,28 @@
 
 namespace App\Http\Requests;
 
+use App\Http\Requests\Concerns\ValidatesClientPlan;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 class UpdateClientRequest extends FormRequest
 {
+    use ValidatesClientPlan;
+
     public function authorize()
     {
         return true;
     }
 
+    protected function prepareForValidation()
+    {
+        $this->normalizeCustomDomain();
+    }
+
     public function rules()
     {
         return [
+            ...$this->planRules($this->route('client')),
             'store_name' => 'sometimes|string|max:255',
             'domain' => [
                 'sometimes',
@@ -36,5 +45,10 @@ class UpdateClientRequest extends FormRequest
             'remove_logo' => 'nullable|boolean',
             'remove_favicon' => 'nullable|boolean',
         ];
+    }
+
+    public function messages()
+    {
+        return $this->planMessages();
     }
 }

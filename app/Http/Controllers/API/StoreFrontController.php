@@ -124,6 +124,19 @@ class StoreFrontController extends Controller
     }
 
     /**
+     * Hoja de estilos con los colores y la fuente de la tienda.
+     */
+    public function stylesheet()
+    {
+        $client = request()->attributes->get('currentClient') ?? abort(404, 'Tienda no encontrada');
+
+        return response()
+            ->view('storefront.themes.default.style', compact('client'))
+            ->header('Content-Type', 'text/css')
+            ->header('Cache-Control', 'public, max-age=86400');
+    }
+
+    /**
      * Tienda identificada por IdentifyClient, con lo que necesita el layout.
      */
     protected function currentClient(): Client

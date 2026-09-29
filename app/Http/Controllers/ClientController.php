@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Traits\HandlesMediaUploads;
 use App\Models\Client;
-use App\Models\Category;
+use App\Models\Plan;
 use App\Http\Requests\StoreClientRequest;
 use App\Http\Requests\UpdateClientRequest;
 use Exception;
@@ -19,9 +19,11 @@ class ClientController extends Controller
             'siteSettings',
             'logo.media',
             'favicon.media',
+            'plan',
             ])->orderByDesc('id')->paginate(10);
         $client = new Client();
-        return view('pageadmin.index', compact('clients', 'client'));
+        $plans = Plan::ordered()->get();
+        return view('pageadmin.index', compact('clients', 'client', 'plans'));
     }
 
     public function show(Client $client)
@@ -30,7 +32,8 @@ class ClientController extends Controller
         $client->load([
                 'siteSettings',
                 'socialNetworks',
-                'plans',
+                'plan',
+                'payments.plan',
                 'pages',
                 'testimonials',
                 'categories',
@@ -44,7 +47,9 @@ class ClientController extends Controller
             ],
         );
 
-        return view('pageadmin.show', compact('client'));
+        $plans = Plan::ordered()->get();
+
+        return view('pageadmin.show', compact('client', 'plans'));
     }
 
     public function edit(Client $client)
@@ -53,7 +58,9 @@ class ClientController extends Controller
             'siteSettings',
             'logo.media',
             'favicon.media',
+            'plan',
             ])->orderByDesc('id')->paginate(10);
+        $plans = Plan::ordered()->get();
 
         $client->load([
             'siteSettings',
@@ -61,7 +68,7 @@ class ClientController extends Controller
             'favicon.media',
             ]);
 
-        return view('pageadmin.index', compact('clients', 'client'));
+        return view('pageadmin.index', compact('clients', 'client', 'plans'));
     }
 
     public function store(StoreClientRequest $request)

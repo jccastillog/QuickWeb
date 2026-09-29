@@ -12,7 +12,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command('quickweb:billing-reminders')
+            ->dailyAt('08:00')
+            ->timezone('America/Bogota')
+            ->withoutOverlapping();
     }
 
     /**

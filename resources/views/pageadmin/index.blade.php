@@ -19,6 +19,7 @@
                                     <tr class="text-center bold">
                                         <th>Nombre</th>
                                         <th>Dominio</th>
+                                        <th>Plan</th>
                                         <th>Estado</th>
                                         <th>Acciones</th>
                                     </tr>
@@ -27,10 +28,24 @@
                                     @forelse($clients as $item)
                                         <tr>
                                             <td>{{ $item->store_name }}</td>
-                                            <td>{{ $item->domain }}</td>
+                                            <td>
+                                                {{ $item->domain }}
+                                                @if ($item->custom_domain)
+                                                    <div class="small text-muted">{{ $item->custom_domain }}</div>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                {{ $item->plan?->name ?? '—' }}
+                                                @if ($item->expires_at)
+                                                    <div class="small text-muted">Vence {{ $item->expires_at->format('d/m/Y') }}</div>
+                                                @endif
+                                            </td>
                                             <td>
                                                 <span class="badge bg-{{ $item->active ? 'success' : 'danger' }}">
                                                     {{ $item->active ? 'Activa' : 'Inactiva' }}
+                                                </span>
+                                                <span class="badge bg-{{ $item->billingStatusColor() }}">
+                                                    {{ $item->billingStatusLabel() }}
                                                 </span>
                                             </td>
                                             <td>
@@ -44,7 +59,7 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="4" class="text-center">No hay tiendas registradas</td>
+                                            <td colspan="5" class="text-center">No hay tiendas registradas</td>
                                         </tr>
                                     @endforelse
                                 </tbody>
@@ -199,15 +214,51 @@
                                 </div>
 
                                 <div class="form-group col-md-6">
-                                    <label for="expires_at">Fecha de Expiración</label>
+                                    <label for="expires_at">Pagado hasta</label>
                                     <input type="date" class="form-control @error('expires_at') is-invalid @enderror"
                                         id="expires_at" name="expires_at"
                                         value="{{ old('expires_at', optional($client->expires_at)->format('Y-m-d')) }}">
+                                    <small class="form-text text-muted">Se actualiza sola al registrar un pago. Vacío = no vence.</small>
                                     @error('expires_at')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
+                            <!-- Sección de Plan -->
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="plan_id">Plan</label>
+                                    <select class="form-control @error('plan_id') is-invalid @enderror" id="plan_id" name="plan_id">
+                                        <option value="">Sin plan (sin límites)</option>
+                                        @foreach ($plans as $plan)
+                                            @if ($plan->active || $plan->id === $client->plan_id)
+                                                <option value="{{ $plan->id }}"
+                                                    {{ (string) old('plan_id', $client->plan_id) === (string) $plan->id ? 'selected' : '' }}>
+                                                    {{ $plan->name }} · {{ App\Support\Money::format($plan->price) }}/mes
+                                                    · {{ $plan->product_limit_label }} productos{{ $plan->allows_custom_domain ? ' · dominio propio' : '' }}
+                                                </option>
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                    @error('plan_id')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <label for="custom_domain">Dominio propio</label>
+                                    <input type="text" class="form-control @error('custom_domain') is-invalid @enderror"
+                                        id="custom_domain" name="custom_domain" placeholder="mitienda.com"
+                                        value="{{ old('custom_domain', $client->custom_domain) }}">
+                                    <small class="form-text text-muted">
+                                        Llénalo solo cuando el dominio ya apunte al servidor y tenga SSL activo en Cloudways.
+                                    </small>
+                                    @error('custom_domain')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
                             <div class="form-row">
                                 <label for="timezone">Zona Horaria</label>
                                 <select class="form-control @error('timezone') is-invalid @enderror" id="timezone"

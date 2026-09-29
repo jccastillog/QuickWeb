@@ -23,12 +23,13 @@ class IdentifyClient
             '/',              // solo permitimos "/" si es dominio principal
             'pageadmin',
             'clients*',
+            'plans*',
             'clients.categories.create',
             'login',
             'user/password',
             'logout',
             'forgot-password',
-            'reset-password*' 
+            'reset-password*'
         ];
 
         foreach ($exemptPaths as $path) {
@@ -39,13 +40,15 @@ class IdentifyClient
         }
 
         // Continuar con identificación del cliente para subdominios o dominios personalizados
-        $domain = $this->extractDomain($request);
-
-        $client = Client::where('domain', $domain)->first();
+        $client = $this->findClient($request);
 
         if (!$client || !$client->active) {
-            \Log::warning('[Middleware] Cliente no encontrado o inactivo para: ' . $domain);
+            \Log::warning('[Middleware] Cliente no encontrado o inactivo para: ' . $currentHost . '/' . $currentPath);
             abort(404, 'Tienda no encontrada');
+        }
+
+        if ($client->isSuspended()) {
+            return response()->view('storefront.suspended', ['client' => $client], 503);
         }
 
         \Log::info('[Middleware] Cliente encontrado: ' . $client->store_name);
@@ -60,22 +63,27 @@ class IdentifyClient
         return $next($request);
     }
 
-    protected function extractDomain($request)
+    protected function findClient($request): ?Client
     {
-        $host = $request->getHost(); // Ej: "cliente1.quickweb.com.co" o "localhost"
+        $host = strtolower($request->getHost()); // Ej: "cliente1.quickweb.com.co" o "localhost"
         $base = 'quickweb.com.co';
 
         // Modo local: usar segmento de URL como dominio
         if (in_array($host, ['localhost', '127.0.0.1'])) {
-            return $request->segment(1) ?: config('client.default_client', 'demo');
+            $domain = $request->segment(1) ?: config('client.default_client', 'demo');
+
+            return Client::where('domain', $domain)->first();
         }
 
         // Si es un subdominio de quickweb.com.co, extraer solo el subdominio
-        if (Str::endsWith($host, $base) && $host !== $base) {
-            return Str::before($host, '.' . $base);
+        if (Str::endsWith($host, '.' . $base)) {
+            return Client::where('domain', Str::before($host, '.' . $base))->first();
         }
 
-        // Para dominios personalizados
-        return $host;
+        // Dominio propio de la tienda (con o sin www)
+        $customDomain = preg_replace('/^www\./', '', $host);
+
+        return Client::where('custom_domain', $customDomain)->first()
+            ?? Client::where('domain', $host)->first();
     }
 }

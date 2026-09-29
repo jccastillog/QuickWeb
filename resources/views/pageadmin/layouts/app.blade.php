@@ -37,6 +37,12 @@
                 </li>
                 @if (auth()->check() && auth()->user()->role === 'admin')
                     <li class="nav-item">
+                        <a href="{{ route('plans.index') }}"
+                            class="nav-link text-black {{ request()->is('plans*') ? 'active' : '' }}">
+                            <i class="bi bi-card-checklist me-2"></i> Planes
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{ route('welcome') }}" class="nav-link text-black">
                             <i class="bi bi-people-fill me-2"></i> Página Inicial
                         </a>

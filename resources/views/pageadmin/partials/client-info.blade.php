@@ -355,59 +355,5 @@
             </div>
         </div>
 
-        <!-- Cuarta fila - Planes -->
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header bg-light">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h6 class="mb-0">Planes</h6>
-                            <a href="{{-- {{ route('plans.create', ['client_id' => $client->id]) }} --}}" class="btn btn-sm btn-primary">
-                                <i class="bi bi-plus"></i> Añadir
-                            </a>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        @if($client->plans->count() > 0)
-                        <div class="table-responsive">
-                            <table class="table table-sm">
-                                <thead>
-                                    <tr>
-                                        <th>Nombre</th>
-                                        <th>Precio</th>
-                                        <th>Intervalo</th>
-                                        <th>Límite Productos</th>
-                                        <th>Límite Almacenamiento</th>
-                                        <th>Estado</th>
-                                        <th>Creado</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($client->plans as $plan)
-                                    <tr>
-                                        <td>{{ $plan->name }}</td>
-                                        <td>${{ number_format($plan->price, 2) }}</td>
-                                        <td>{{ ucfirst($plan->interval) }}</td>
-                                        <td>{{ $plan->product_limit }}</td>
-                                        <td>{{ $plan->storage_limit }}</td>
-                                        <td>
-                                            <span class="badge bg-{{ $plan->active ? 'success' : 'secondary' }}">
-                                                {{ $plan->active ? 'Activo' : 'Inactivo' }}
-                                            </span>
-                                        </td>
-                                        <td>{{ $plan->created_at->format('d/m/Y') }}</td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                        @else
-                        <div class="alert alert-info mb-0">No hay planes configurados</div>
-                        @endif
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
 </div>

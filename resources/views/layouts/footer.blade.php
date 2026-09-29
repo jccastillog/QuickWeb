@@ -29,31 +29,7 @@
                         <span class="text-primary fw-semibold">Recibe nuestro catálogo actual</span>
                     </div>
 
-                    @php
-                        $action = '#';
-
-                        if (App::environment('production')) {
-                            // ✅ Mantiene la lógica que ya te funciona en producción
-                            if (Route::has('newsletter.subscribe') && isset($client?->domain)) {
-                                $action = route('newsletter.subscribe', ['client' => $client->domain]);
-                            } elseif (Route::has('newsletter.subscribe.fallback') && isset($client?->domain)) {
-                                $action = route('newsletter.subscribe.fallback', ['domain' => $client->domain]);
-                            }
-                        } else {
-                            // 🛠️ Ajuste para entorno local
-                            $domain = request()->route('domain') ?? $client?->domain;
-
-                            if (Route::has('newsletter.subscribe') && $domain) {
-                                $action = route('newsletter.subscribe', ['domain' => $domain]);
-                            } elseif (Route::has('newsletter.subscribe.fallback') && $domain) {
-                                $action = route('newsletter.subscribe.fallback', ['domain' => $domain]);
-                            }
-                        }
-
-                    @endphp
-
-
-                    <form id="newsletterForm" method="POST" action="{{ $action }}" class="d-flex">
+                    <form id="newsletterForm" method="POST" action="{{ $client->storeUrl('newsletter') }}" class="d-flex">
                         @csrf
                         <input type="email" name="email" class="form-control" placeholder="Tu correo electrónico"
                             required>

@@ -26,6 +26,8 @@
         </div>
     </div>
 
+    @include('pageadmin.partials.billing')
+
     <!-- Pestañas -->
     <ul class="nav nav-tabs mb-4" id="clientTabs" role="tablist">
         <li class="nav-item" role="presentation">
