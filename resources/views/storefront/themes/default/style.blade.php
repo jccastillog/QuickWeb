@@ -10,14 +10,40 @@ body {
     background-color: #fff;
 }
 
-/* Ejemplo de uso de colores personalizados */
+/* Botones con el color de la tienda. Se usan las variables de Bootstrap para que
+   hover, focus y active conserven el color; el oscurecimiento se hace con filter
+   porque CSS no puede oscurecer un color arbitrario de forma confiable. */
 .btn-primary {
-    background-color: var(--color-primario);
-    border-color: var(--color-primario);
+    --bs-btn-bg: var(--color-primario);
+    --bs-btn-border-color: var(--color-primario);
+    --bs-btn-hover-bg: var(--color-primario);
+    --bs-btn-hover-border-color: var(--color-primario);
+    --bs-btn-active-bg: var(--color-primario);
+    --bs-btn-active-border-color: var(--color-primario);
+    --bs-btn-disabled-bg: var(--color-primario);
+    --bs-btn-disabled-border-color: var(--color-primario);
 }
-.btn-primary:hover {
-    background-color: darken(var(--color-primario), 10%);
-    border-color: darken(var(--color-primario), 10%);
+.btn-primary:hover,
+.btn-primary:focus-visible {
+    filter: brightness(0.9);
+}
+.btn-primary:active {
+    filter: brightness(0.8);
+}
+
+.btn-outline-primary {
+    --bs-btn-color: var(--color-primario);
+    --bs-btn-border-color: var(--color-primario);
+    --bs-btn-hover-bg: var(--color-primario);
+    --bs-btn-hover-border-color: var(--color-primario);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-active-bg: var(--color-primario);
+    --bs-btn-active-border-color: var(--color-primario);
+    --bs-btn-active-color: #fff;
+}
+
+.btn {
+    transition: filter .15s ease-in-out, background-color .15s ease-in-out, color .15s ease-in-out;
 }
 
 .text-primary {
