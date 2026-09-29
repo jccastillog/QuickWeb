@@ -18,6 +18,7 @@ class PlanRequest extends FormRequest
     {
         $this->merge([
             'allows_custom_domain' => $this->boolean('allows_custom_domain'),
+            'highlighted' => $this->boolean('highlighted'),
             'active' => $this->boolean('active'),
             // Vacío = ilimitado
             'product_limit' => $this->filled('product_limit') ? $this->input('product_limit') : null,
@@ -35,9 +36,11 @@ class PlanRequest extends FormRequest
                 Rule::unique('plans', 'slug')->ignore($this->route('plan')),
             ],
             'description' => 'nullable|string|max:500',
+            'features' => 'nullable|string|max:2000',
             'price' => 'required|numeric|min:0',
             'product_limit' => 'nullable|integer|min:1',
             'allows_custom_domain' => 'boolean',
+            'highlighted' => 'boolean',
             'active' => 'boolean',
             'sort_order' => 'nullable|integer|min:0',
         ];

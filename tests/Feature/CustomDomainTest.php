@@ -24,6 +24,8 @@ class CustomDomainTest extends TestCase
 
         $this->app['env'] = 'production';
         Route::setRoutes(new RouteCollection());
+        Route::namespace('Laravel\Fortify\Http\Controllers')
+            ->group(base_path('vendor/laravel/fortify/routes/routes.php'));
         Route::middleware('web')->group(base_path('routes/web.php'));
         Route::getRoutes()->refreshNameLookups();
 

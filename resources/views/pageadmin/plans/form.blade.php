@@ -43,6 +43,17 @@
                             @error('description')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
 
+                        <div class="col-12">
+                            <label for="features" class="form-label">Características para la página de QuickWeb</label>
+                            <textarea id="features" name="features" rows="5" maxlength="2000"
+                                class="form-control @error('features') is-invalid @enderror"
+                                placeholder="Una por línea">{{ old('features', $plan->features) }}</textarea>
+                            <small class="form-text text-muted">
+                                Una por línea. El límite de productos y el tipo de dominio se agregan solos.
+                            </small>
+                            @error('features')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                        </div>
+
                         <div class="col-md-4">
                             <label for="price" class="form-label">Precio mensual (COP)*</label>
                             <input type="number" id="price" name="price" required min="0" step="100"
@@ -71,6 +82,13 @@
                                     name="allows_custom_domain" value="1"
                                     {{ old('allows_custom_domain', $plan->allows_custom_domain) ? 'checked' : '' }}>
                                 <label class="form-check-label" for="allows_custom_domain">Incluye dominio propio</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="highlighted" name="highlighted"
+                                    value="1" {{ old('highlighted', $plan->highlighted) ? 'checked' : '' }}>
+                                <label class="form-check-label" for="highlighted">Destacar como "Más popular"</label>
                             </div>
                         </div>
                         <div class="col-md-6">

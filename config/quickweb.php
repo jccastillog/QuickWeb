@@ -38,6 +38,6 @@ return [
     'admin_email' => env('QUICKWEB_ADMIN_EMAIL'),
 
     // Contacto que ven los dueños de tienda para renovar (número con indicativo, sin +)
-    'support_whatsapp' => env('QUICKWEB_SUPPORT_WHATSAPP'),
+    'support_whatsapp' => env('QUICKWEB_SUPPORT_WHATSAPP', '573213086428'),
 
 ];
